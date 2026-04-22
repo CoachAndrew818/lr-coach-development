@@ -169,7 +169,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .ov-cc-mid{padding:18px 24px}
 .ov-cc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
 .ov-mi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t4)}
-.ov-mi-v{font-size:13px;font-weight:700;color:var(--t1);margin-top:3px}
+.ov-mi-v{font-size:13px;font-weight:700;color:var(--t1);margin-top:3px;white-space:nowrap}
 .ov-prog-track{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;border:1px solid var(--s3)}
 .ov-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#E8C56A)}
 .ov-cc-right{padding:18px 22px;display:flex;align-items:center}
@@ -201,6 +201,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .tw-date-sched{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
 .tw-date-prep{background:var(--s2);color:var(--t3);border:1px solid var(--s3)}
 .tw-date-up{background:var(--s2);color:var(--t4);border:1px solid var(--s3)}
+.tw-date-done{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
 .tw-info{}
 .tw-title{font-size:13px;font-weight:700;color:var(--t1)}
 .tw-sub{font-size:12px;color:var(--t4);margin-top:2px}
@@ -587,7 +588,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <div class="ov-head-sub">2 active coaches · 3 weeks running</div>
     </div>
     <div class="ov-head-right">
-      <strong>Week of 19 Apr 2026</strong>Week 3 of 4
+      <strong>Week of 22 Apr 2026</strong>Week 3 of 4
     </div>
   </div>
 
@@ -598,9 +599,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <div class="sc-sub">Vinny &amp; Civian</div>
     </div>
     <div class="stat-card">
-      <div class="sc-num green">3</div>
+      <div class="sc-num green">5</div>
       <div class="sc-label">Sessions Complete</div>
-      <div class="sc-sub">Vinny ×2 · Civian ×1</div>
+      <div class="sc-sub">Vinny ×3 · Civian ×2</div>
     </div>
     <div class="stat-card">
       <div class="sc-num green">4</div>
@@ -608,9 +609,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <div class="sc-sub">Vinny ×4 · Civian ×0</div>
     </div>
     <div class="stat-card">
-      <div class="sc-num">3<span style="font-size:20px;color:var(--t4)">+</span></div>
+      <div class="sc-num">2<span style="font-size:20px;color:var(--t4)">+</span></div>
       <div class="sc-label">Sessions Remaining</div>
-      <div class="sc-sub">Vinny ×2 · Civian ×1+</div>
+      <div class="sc-sub">Vinny ×1 · Civian ×1+</div>
     </div>
     <div class="stat-card">
       <div class="sc-num green">3</div>
@@ -664,8 +665,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="ov-cc-mid">
                 <div class="ov-cc-row">
                   <div><div class="ov-mi-l">Sessions</div><div class="ov-mi-v">2 of 3+</div></div>
-                  <div><div class="ov-mi-l">Next</div><div class="ov-mi-v">Session 3 · May</div></div>
-                  <div><div class="ov-mi-l">Focus</div><div class="ov-mi-v">Floor management</div></div>
+                  <div><div class="ov-mi-l">Next</div><div class="ov-mi-v">S3 · May</div></div>
+                  <div><div class="ov-mi-l">Focus</div><div class="ov-mi-v">Two clients</div></div>
                 </div>
                 <div class="ov-prog-track"><div class="ov-prog-fill" style="width:66%"></div></div>
               </div>
@@ -681,34 +682,34 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
     <div>
       <div class="card">
-        <div class="ph">This Week</div>
+        <div class="ph">Recent &amp; Upcoming</div>
         <div class="this-week">
           <div class="tw-item">
-            <div class="tw-date tw-date-sched">22 Apr · Wed</div>
+            <div class="tw-date tw-date-done">22 Apr · Wed</div>
             <div class="tw-info">
-              <div class="tw-title">Civian — Session 2</div>
-              <div class="tw-sub">Systems review &amp; floor check-in · Scheduled</div>
+              <div class="tw-title">Vinny — Session 3 ✓</div>
+              <div class="tw-sub">Joint session · Phase 3/4 breakthrough · Complete</div>
             </div>
           </div>
           <div class="tw-item">
-            <div class="tw-date tw-date-prep">~22 Apr · Wed</div>
+            <div class="tw-date tw-date-done">22 Apr · Wed</div>
             <div class="tw-info">
-              <div class="tw-title">Vinny — Session 3</div>
-              <div class="tw-sub">Phase 3 &amp; 4 of Coach's Lens · Prepped</div>
+              <div class="tw-title">Civian — Session 2 ✓</div>
+              <div class="tw-sub">Equipment standard + communication review · Complete</div>
             </div>
           </div>
           <div class="tw-item">
             <div class="tw-date tw-date-up">~29 Apr</div>
             <div class="tw-info">
               <div class="tw-title">Vinny — Session 4</div>
-              <div class="tw-sub">Phase 5 &amp; full review · Upcoming</div>
+              <div class="tw-sub">Fluency — putting it all together · Final session</div>
             </div>
           </div>
           <div class="tw-item">
-            <div class="tw-date tw-date-up">~29 Apr</div>
+            <div class="tw-date tw-date-up">May</div>
             <div class="tw-info">
-              <div class="tw-title">Vinny — Session 4 &amp; Cycle Review</div>
-              <div class="tw-sub">Final session + end-of-cycle development summary</div>
+              <div class="tw-title">Civian — Session 3</div>
+              <div class="tw-sub">Two-client floor management in practice · Volume ramp-up begins</div>
             </div>
           </div>
         </div>
@@ -738,11 +739,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <circle class="pb-ring-track" cx="50" cy="50" r="42"/>
           <circle class="pb-ring-fill" cx="50" cy="50" r="42"
             stroke="url(#rg2)"
-            data-offset="131.95"
+            data-offset="65.97"
             style="stroke-dashoffset:263.9;transform-origin:50px 50px;transform:rotate(-90deg)"/>
         </svg>
         <div class="pb-ring-inner">
-          <div class="pb-ring-n">2/4</div>
+          <div class="pb-ring-n">3/4</div>
           <div class="pb-ring-s">Done</div>
         </div>
       </div>
@@ -757,8 +758,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       </div>
     </div>
     <div class="pb-kpis">
-      <div class="pk"><div class="pk-n">2</div><div class="pk-l">Sessions Done</div></div>
-      <div class="pk"><div class="pk-n">2</div><div class="pk-l">Remaining</div></div>
+      <div class="pk"><div class="pk-n">3</div><div class="pk-l">Sessions Done</div></div>
+      <div class="pk"><div class="pk-n">1</div><div class="pk-l">Remaining</div></div>
       <div class="pk"><div class="pk-n" style="color:rgba(255,255,255,.2);font-size:18px">—</div><div class="pk-l">Formal Score</div></div>
     </div>
   </div>
@@ -1303,11 +1304,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <circle class="pb-ring-track" cx="50" cy="50" r="42"/>
           <circle class="pb-ring-fill" cx="50" cy="50" r="42"
             stroke="url(#rg2)"
-            data-offset="197.9"
+            data-offset="89.73"
             style="stroke-dashoffset:263.9;transform-origin:50px 50px;transform:rotate(-90deg)"/>
         </svg>
         <div class="pb-ring-inner">
-          <div class="pb-ring-n">1/2<span style="font-size:12px;opacity:.5">+</span></div>
+          <div class="pb-ring-n">2/3<span style="font-size:12px;opacity:.5">+</span></div>
           <div class="pb-ring-s">Done</div>
         </div>
       </div>
@@ -1322,7 +1323,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       </div>
     </div>
     <div class="pb-kpis">
-      <div class="pk"><div class="pk-n">1</div><div class="pk-l">Sessions Done</div></div>
+      <div class="pk"><div class="pk-n">2</div><div class="pk-l">Sessions Done</div></div>
       <div class="pk"><div class="pk-n">1+</div><div class="pk-l">Remaining</div></div>
       <div class="pk"><div class="pk-n" style="color:rgba(255,255,255,.2);font-size:18px">—</div><div class="pk-l">Formal Score</div></div>
     </div>
