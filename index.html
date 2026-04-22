@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lockeroom — Coach Development</title>
+<style>
+/* ── VARIABLES ───────────────────────────── */
+:root{
+  --gold:#C9A84C;--gold-l:rgba(201,168,76,.12);--gold-b:rgba(201,168,76,.3);
+  --green:#16A34A;--green-l:rgba(22,163,74,.1);--green-b:rgba(22,163,74,.25);
+  --dark:#1E1E1E;--dark2:#2A2A2A;
+  --black:#111111;
+  --bg:#F5F4F0;--bg2:#EEECEA;
+  --white:#FFFFFF;
+  --s1:#F8F7F4;--s2:#EEECEA;--s3:#E0DDD8;
+  --t1:#111111;--t2:#444444;--t3:#777777;--t4:#AAAAAA;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.05),0 1px 8px rgba(0,0,0,.04);
+  --shadow:0 2px 16px rgba(0,0,0,.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.11);
+  --r:16px;--r-sm:10px;
+  --sb:220px;--topbar:52px
+}
+/* ── RESET ───────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+html{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;height:100vh;overflow:hidden
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ── TOP BAR ─────────────────────────────── */
+.topbar{
+  height:var(--topbar);flex-shrink:0;
+  background:var(--white);border-bottom:1px solid var(--s3);
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:200;padding-right:24px
+}
+.tb-left{display:flex;align-items:center}
+.tb-logo{
+  width:var(--topbar);height:var(--topbar);flex-shrink:0;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;letter-spacing:-.3px
+}
+.tb-divider{width:1px;height:22px;background:var(--s3);margin:0 18px}
+.tb-title{font-size:13px;font-weight:800;color:var(--black);letter-spacing:-.2px}
+.tb-sub{font-size:11px;color:var(--t4);margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.week-pill{
+  background:var(--black);color:#fff;
+  padding:5px 13px;border-radius:20px;
+  font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase
+}
+
+/* ── APP LAYOUT ──────────────────────────── */
+.app-layout{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.sidebar{
+  width:var(--sb);flex-shrink:0;
+  background:var(--white);border-right:1px solid var(--s3);
+  display:flex;flex-direction:column;
+  overflow-y:auto
+}
+.sb-nav{padding:10px 0;flex:1}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--t2);
+  border-left:2px solid transparent;
+  transition:all .15s
+}
+.sb-item:hover{background:var(--s1);color:var(--t1)}
+.sb-item.active{background:var(--s1);color:var(--black);border-left-color:var(--gold);font-weight:700}
+.sb-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2}
+.sb-section{
+  font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.8px;color:var(--t4);
+  padding:14px 16px 6px
+}
+.sb-coach{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:all .15s
+}
+.sb-coach:hover{background:var(--s1)}
+.sb-coach.active{background:var(--s1);border-left-color:var(--gold)}
+.sb-coach.active .sb-cn{color:var(--black);font-weight:800}
+.sb-av{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--black);color:#fff;
+  font-size:11px;font-weight:900;letter-spacing:.1px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.sb-ci{flex:1;min-width:0}
+.sb-cn{font-size:13px;font-weight:700;color:var(--t1);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-cm{font-size:11px;color:var(--t4);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 2px var(--green-l)}
+.sb-footer{
+  padding:12px 16px;border-top:1px solid var(--s3);
+  font-size:11px;color:var(--t4)
+}
+
+/* ── MAIN CONTENT ────────────────────────── */
+.main{flex:1;overflow-y:auto;background:var(--bg);padding:32px}
+.page{display:none}.page.active{display:block;animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gap-top{margin-top:16px}
+
+/* ── OVERVIEW HEAD ───────────────────────── */
+.ov-head{margin-bottom:28px;display:flex;align-items:flex-end;justify-content:space-between}
+.ov-head h2{font-size:36px;font-weight:900;letter-spacing:-1px;color:var(--black);line-height:1}
+.ov-head-sub{font-size:14px;color:var(--t3);margin-top:5px}
+.ov-head-right{text-align:right;font-size:12px;color:var(--t4)}
+.ov-head-right strong{display:block;font-size:13px;color:var(--t3);font-weight:600;margin-bottom:1px}
+
+/* ── STAT STRIP ──────────────────────────── */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{
+  background:var(--white);border-radius:var(--r-sm);
+  padding:20px;border:1px solid var(--s3);box-shadow:var(--shadow-sm)
+}
+.sc-num{font-size:38px;font-weight:900;letter-spacing:-2px;line-height:1;color:var(--black)}
+.sc-num.gold{color:var(--gold)}
+.sc-num.green{color:var(--green)}
+.sc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t4);margin-top:5px}
+.sc-sub{font-size:12px;color:var(--t4);margin-top:2px}
+
+/* ── OVERVIEW COACH CARDS ────────────────── */
+.ov-coaches{display:grid;gap:14px;margin-bottom:24px}
+.ov-ccard{
+  background:var(--white);border-radius:var(--r-sm);
+  border:1px solid var(--s3);box-shadow:var(--shadow-sm);
+  overflow:hidden;cursor:pointer;
+  transition:box-shadow .2s,border-color .2s
+}
+.ov-ccard:hover{box-shadow:var(--shadow);border-color:var(--gold-b)}
+.ov-cc-inner{display:grid;grid-template-columns:190px 1fr auto;align-items:center;gap:0}
+.ov-cc-left{
+  background:var(--s2);padding:18px 22px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;overflow:hidden;
+  border-right:1px solid var(--s3)
+}
+.ov-av{
+  width:40px;height:40px;border-radius:9px;
+  background:var(--dark2);
+  border:1px solid var(--s3);
+  font-size:15px;font-weight:900;color:#fff;letter-spacing:-.3px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.ov-av-info{position:relative;z-index:1}
+.ov-av-name{font-size:16px;font-weight:900;color:var(--black);letter-spacing:-.4px;line-height:1}
+.ov-av-role{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;margin-top:4px}
+.ov-av-status{
+  display:inline-flex;align-items:center;gap:5px;margin-top:5px;
+  font-size:10px;font-weight:700;color:var(--green);letter-spacing:.3px
+}
+.ov-av-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ov-cc-mid{padding:18px 24px}
+.ov-cc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.ov-mi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t4)}
+.ov-mi-v{font-size:13px;font-weight:700;color:var(--t1);margin-top:3px}
+.ov-prog-track{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;border:1px solid var(--s3)}
+.ov-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#E8C56A)}
+.ov-cc-right{padding:18px 22px;display:flex;align-items:center}
+.ov-cta{
+  background:var(--s2);color:var(--t2);
+  border:1px solid var(--s3);
+  padding:9px 16px;border-radius:8px;
+  font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  transition:all .2s
+}
+.ov-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}
+.ov-ccard:hover .ov-cta{background:var(--dark2);color:#fff;border-color:var(--dark2)}
+.ov-ccard:hover .ov-cta svg{transform:translateX(3px)}
+
+/* ── THIS WEEK PANEL ─────────────────────── */
+.this-week{display:grid;gap:10px}
+.tw-item{
+  background:var(--white);border:1px solid var(--s3);
+  border-radius:var(--r-sm);padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+  box-shadow:var(--shadow-sm)
+}
+.tw-date{
+  padding:5px 10px;border-radius:6px;
+  font-size:11px;font-weight:800;
+  white-space:nowrap;flex-shrink:0;margin-top:2px
+}
+.tw-date-sched{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
+.tw-date-prep{background:var(--s2);color:var(--t3);border:1px solid var(--s3)}
+.tw-date-up{background:var(--s2);color:var(--t4);border:1px solid var(--s3)}
+.tw-info{}
+.tw-title{font-size:13px;font-weight:700;color:var(--t1)}
+.tw-sub{font-size:12px;color:var(--t4);margin-top:2px}
+
+/* ── PROFILE BANNER ─────────────────────── */
+.prof-banner{
+  background:var(--dark);border-radius:var(--r);
+  display:grid;grid-template-columns:auto 1fr auto;
+  overflow:hidden;position:relative;
+  box-shadow:var(--shadow-lg);margin-bottom:24px
+}
+.prof-banner::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:22px 22px;pointer-events:none
+}
+.prof-banner::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold) 40%,var(--gold) 60%,transparent)
+}
+.pb-ring-area{padding:32px 28px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.pb-ring-area svg{display:block}
+.pb-ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:7}
+.pb-ring-fill{
+  fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;
+  stroke-dasharray:263.9;
+  transition:stroke-dashoffset 1.4s cubic-bezier(.25,.46,.45,.94)
+}
+.pb-ring-inner-wrap{position:relative}
+.pb-ring-inner{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center
+}
+.pb-ring-n{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1}
+.pb-ring-s{font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.pb-info{padding:32px 0;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1}
+.pb-info h2{font-size:34px;font-weight:900;color:#fff;letter-spacing:-.8px;line-height:1}
+.pb-meta{display:flex;flex-wrap:wrap;gap:0;margin-top:10px}
+.pb-meta span{font-size:11px;color:rgba(255,255,255,.3);padding-right:14px;margin-right:14px;border-right:1px solid rgba(255,255,255,.08)}
+.pb-meta span:last-child{border:none;padding:0;margin:0}
+.pb-kpis{padding:32px 36px;display:flex;align-items:center;gap:0;position:relative;z-index:1}
+.pk{text-align:center;padding:0 22px;border-right:1px solid rgba(255,255,255,.07)}
+.pk:last-child{border:none}
+.pk-n{font-size:28px;font-weight:900;color:var(--gold);letter-spacing:-1px;line-height:1}
+.pk-l{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+
+/* ── TABS ────────────────────────────────── */
+.tab-bar{
+  display:inline-flex;gap:3px;
+  background:var(--white);padding:4px;border-radius:11px;
+  border:1px solid var(--s3);margin-bottom:24px;box-shadow:var(--shadow-sm)
+}
+.tab-btn{
+  padding:8px 20px;font-size:12px;font-weight:700;
+  color:var(--t3);border-radius:7px;transition:all .2s;
+  text-transform:uppercase;letter-spacing:.4px
+}
+.tab-btn:hover:not(.active){color:var(--t1);background:var(--s1)}
+.tab-btn.active{background:var(--black);color:#fff}
+.tc{display:none}.tc.active{display:block;animation:fadein .2s ease}
+
+/* ── CARDS ───────────────────────────────── */
+.card{
+  background:var(--white);border-radius:var(--r-sm);
+  padding:22px;border:1px solid var(--s3);
+  box-shadow:var(--shadow-sm)
+}
+.card+.card{margin-top:14px}
+
+/* ── PANEL HEADINGS ──────────────────────── */
+.ph{
+  font-size:15px;font-weight:800;color:var(--black);
+  letter-spacing:-.2px;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px
+}
+.ph::before{
+  content:'';width:3px;height:16px;border-radius:2px;
+  background:var(--gold);flex-shrink:0
+}
+
+/* ── TAGS ────────────────────────────────── */
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{
+  padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;
+  background:var(--s1);color:var(--t2);border:1px solid var(--s3)
+}
+.tag-g{background:rgba(22,163,74,.06);color:#15803D;border-color:rgba(22,163,74,.2)}
+.tag-gold{background:var(--gold-l);color:var(--gold);border-color:var(--gold-b)}
+
+/* ── OBSERVATION BARS ────────────────────── */
+.obs-list{display:grid;gap:14px}
+.obs-row{display:grid;grid-template-columns:200px 1fr;align-items:start;gap:14px}
+.obs-cat{font-size:13px;font-weight:700;color:var(--t1);padding-top:2px}
+.obs-cat-num{
+  display:inline-flex;width:20px;height:20px;border-radius:50%;
+  background:var(--s2);border:1px solid var(--s3);
+  align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:var(--t4);margin-right:7px;flex-shrink:0
+}
+.obs-right{display:flex;flex-direction:column;gap:5px}
+.obs-track{height:7px;background:var(--s2);border-radius:4px;overflow:hidden;border:1px solid var(--s3)}
+.obs-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#E8C56A);width:0%;transition:width 1.2s cubic-bezier(.25,.46,.45,.94)}
+.obs-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.obs-label-val{font-size:11px;font-weight:700;color:var(--t3)}
+.obs-label-val.developing{color:#B45309}
+.obs-label-val.building{color:var(--gold)}
+.obs-label-val.on-track{color:#0369A1}
+.obs-label-val.strong{color:var(--green)}
+.obs-note{font-size:11px;color:var(--t4);line-height:1.4;font-style:italic}
+.obs-pending{
+  font-size:11px;font-weight:700;color:var(--t4);
+  text-transform:uppercase;letter-spacing:.4px;
+  background:var(--s2);padding:2px 8px;border-radius:10px;border:1px solid var(--s3)
+}
+
+/* ── DEVELOPMENT TIMELINE ────────────────── */
+.dev-tl{padding:16px 0 10px;position:relative}
+.tl-track-wrap{position:absolute;top:32px;left:calc(100%/8);width:calc(100% - 100%/4);height:3px;z-index:0;border-radius:3px;overflow:hidden}
+.tl-track-bg{position:absolute;inset:0;background:var(--s3)}
+.tl-track-prog{position:absolute;left:0;top:0;bottom:0;background:var(--green);transition:width 1s ease}
+.tl-steps{display:grid;position:relative;z-index:1}
+.tl-step{display:flex;flex-direction:column;align-items:center;gap:7px}
+.tl-dot{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800
+}
+.d-done{background:var(--green);color:#fff}
+.d-now{background:var(--gold);color:var(--black);box-shadow:0 0 0 5px rgba(201,168,76,.15)}
+.d-up{background:var(--white);color:var(--t4);border:2px solid var(--s3)}
+.tl-name{font-size:11px;font-weight:700;color:var(--t1);text-align:center}
+.tl-date{font-size:10px;color:var(--t4);text-align:center}
+.tl-badge{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:2px 8px;border-radius:20px;margin-top:1px}
+.tb-done{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.tb-now{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
+.tb-up{background:var(--s2);color:var(--t4);border:1px solid var(--s3)}
+
+/* ── SESSION FOCUS BLOCKS ────────────────── */
+.sess-blocks{display:grid;gap:10px}
+.sb{border-radius:10px;padding:16px 18px;border:1px solid transparent}
+.sb-done{background:var(--green-l);border-color:var(--green-b)}
+.sb-done .sbn{color:var(--green);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sb-done .sbt{color:var(--black);font-size:13px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.sb-done .sbd{color:var(--t3);font-size:12px;line-height:1.5}
+.sb-now{background:var(--gold-l);border-color:var(--gold-b)}
+.sb-now .sbn{color:var(--gold);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sb-now .sbt{color:var(--black);font-size:13px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.sb-now .sbd{color:var(--t3);font-size:12px;line-height:1.5}
+.sb-up{background:var(--s2);border-color:var(--s3)}
+.sb-up .sbn{color:var(--t4);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sb-up .sbt{color:var(--t3);font-size:13px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.sb-up .sbd{color:var(--t4);font-size:12px;line-height:1.5}
+
+/* ── SESSION TABS ────────────────────────── */
+.stab-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.stab{
+  padding:7px 15px;font-size:11px;font-weight:700;
+  border:1px solid var(--s3);background:var(--white);
+  color:var(--t3);border-radius:7px;transition:all .2s;
+  text-transform:uppercase;letter-spacing:.4px;
+  display:inline-flex;align-items:center;gap:5px
+}
+.stab.active{background:var(--black);border-color:var(--black);color:#fff}
+.stab:hover:not(.active){border-color:var(--black);color:var(--t1)}
+.stab-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.stc{display:none}.stc.active{display:block;animation:fadein .2s ease}
+
+/* ── SESSION DETAIL ──────────────────────── */
+.sess-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.sh-title{font-size:22px;font-weight:900;color:var(--black);letter-spacing:-.4px}
+.sh-date{font-size:12px;color:var(--t4);margin-top:4px}
+.sess-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.ss-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--s1);border:1px solid var(--s3);
+  border-radius:20px;padding:5px 12px;
+  font-size:12px;font-weight:600;color:var(--t2)
+}
+.ss-ic{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--black);display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.ss-ic svg{width:9px;height:9px;color:#fff}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px}
+.topic-tile{
+  background:var(--s1);border:1px solid var(--s3);
+  border-radius:8px;padding:11px 13px;
+  display:flex;align-items:flex-start;gap:9px;
+  transition:border-color .2s
+}
+.topic-tile:hover{border-color:var(--gold-b)}
+.tt-num{font-size:10px;font-weight:900;color:var(--gold);flex-shrink:0;padding-top:2px;min-width:18px}
+.tt-text{font-size:12px;font-weight:600;color:var(--t2);line-height:1.4}
+.insight-box{
+  background:var(--s1);border-left:3px solid var(--gold);
+  border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;
+  border-top:1px solid var(--s3);border-right:1px solid var(--s3);border-bottom:1px solid var(--s3)
+}
+.insight-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);margin-bottom:5px}
+.insight-text{font-size:13px;color:var(--t1);line-height:1.6;font-style:italic}
+.clist{list-style:none;display:grid;gap:7px}
+.clist li{
+  padding:10px 14px;font-size:13px;color:var(--t2);
+  background:var(--s1);border-radius:8px;
+  display:flex;align-items:flex-start;gap:10px;line-height:1.5;
+  border:1px solid var(--s3)
+}
+.chk{
+  width:18px;height:18px;border-radius:50%;flex-shrink:0;
+  background:var(--green);margin-top:1px;
+  display:flex;align-items:center;justify-content:center
+}
+.chk svg{width:10px;height:10px;color:#fff;stroke:currentColor;stroke-width:3}
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.phase-tile{border-radius:8px;padding:14px;border:1px solid var(--s3);background:var(--white)}
+.pt-num{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:5px}
+.pt-name{font-size:13px;font-weight:800;color:var(--black);margin-bottom:5px}
+.pt-desc{font-size:12px;color:var(--t3);line-height:1.4}
+
+/* ── REFLECTIONS ─────────────────────────── */
+.refl-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 5px;
+  background:var(--green);color:#fff;
+  border-radius:20px;font-size:10px;font-weight:800;
+  margin-left:4px;letter-spacing:0
+}
+.refl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.rs-card{
+  background:var(--white);border-radius:var(--r-sm);
+  padding:16px;border:1px solid var(--s3);box-shadow:var(--shadow-sm);text-align:center
+}
+.rs-num{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1;color:var(--black)}
+.rs-num.green{color:var(--green)}
+.rs-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t4);margin-top:4px}
+.theme-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.theme-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600
+}
+.theme-win{background:var(--green-l);color:#15803D;border:1px solid var(--green-b)}
+.theme-gap{background:rgba(234,88,12,.06);color:#C2410C;border:1px solid rgba(234,88,12,.15)}
+.theme-dev{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
+.refl-list{display:grid;gap:12px}
+.refl-card{
+  background:var(--white);border-radius:var(--r-sm);
+  border:1px solid var(--s3);box-shadow:var(--shadow-sm);
+  overflow:hidden
+}
+.rc-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--s3);
+  background:var(--s1)
+}
+.rc-date{font-size:13px;font-weight:800;color:var(--black)}
+.rc-meta{display:flex;align-items:center;gap:8px}
+.rc-role{font-size:11px;color:var(--t4);background:var(--s2);border:1px solid var(--s3);padding:2px 9px;border-radius:20px;font-weight:600}
+.rc-feel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:3px 10px;border-radius:20px}
+.rc-feel.strong{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.rc-feel.solid{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
+.rc-feel.ok{background:var(--s2);color:var(--t3);border:1px solid var(--s3)}
+.rc-body{padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rc-field{}
+.rc-fl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--t4);margin-bottom:4px}
+.rc-fv{font-size:13px;color:var(--t2);line-height:1.5}
+.rc-full{grid-column:1/-1}
+.rc-dot-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.rc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rc-dot.yes{background:var(--green)}
+.rc-dot.partial{background:var(--gold)}
+.rc-dot.no{background:#EF4444}
+
+/* ── BADGES ──────────────────────────────── */
+.badge{padding:5px 12px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.b-done{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.b-sched{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-b)}
+.b-prep{background:var(--s2);color:var(--t3);border:1px solid var(--s3)}
+.b-pend{background:var(--s2);color:var(--t4);border:1px solid var(--s3)}
+
+/* ── EMPTY STATE ─────────────────────────── */
+.empty{
+  background:var(--white);border-radius:var(--r-sm);
+  border:1.5px dashed var(--s3);
+  padding:52px 24px;text-align:center
+}
+.empty-ico{font-size:28px;margin-bottom:10px;opacity:.4}
+.empty p{font-size:13px;color:var(--t4);font-weight:500}
+
+/* ── DIVIDER ─────────────────────────────── */
+.divider{height:1px;background:var(--s3);margin:0}
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media(max-width:900px){
+  :root{--sb:200px}
+  .pb-kpis{display:none}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .g4,.sess-blocks{grid-template-columns:1fr 1fr}
+  .ov-cc-inner{grid-template-columns:1fr}
+  .ov-cc-left{padding:16px 18px}
+  .ov-cc-right{display:none}
+}
+@media(max-width:680px){
+  .app-layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;flex-direction:row;border-right:none;border-bottom:1px solid var(--s3)}
+  .sb-nav{display:flex;padding:6px;overflow-x:auto}
+  .sb-section{display:none}
+  .sb-footer{display:none}
+  .main{padding:20px 16px 60px}
+  .g2{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr 1fr;gap:10px}
+  .prof-banner{grid-template-columns:1fr}
+  .pb-ring-area{padding:22px}
+  .pb-info{padding:0 22px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">LR</div>
+    <div class="tb-divider"></div>
+    <div>
+      <div class="tb-title">Coach Development</div>
+      <div class="tb-sub">Lockeroom · April 2026</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <span class="week-pill">Week 3</span>
+  </div>
+</div>
+
+<!-- ══════ APP LAYOUT ══════ -->
+<div class="app-layout">
+
+<!-- ══════ SIDEBAR ══════ -->
+<nav class="sidebar">
+  <div class="sb-nav">
+
+    <!-- Overview -->
+    <div class="sb-item active" id="nav-overview" onclick="showOverview()">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </div>
+
+    <div class="sb-section">Coaches</div>
+
+    <!-- Vinny -->
+    <div class="sb-coach" id="nav-vinny" onclick="showCoach('vinny')">
+      <div class="sb-av">V</div>
+      <div class="sb-ci">
+        <div class="sb-cn">Vinny</div>
+        <div class="sb-cm">Foundational Dev · 2/4</div>
+      </div>
+      <div class="sb-dot"></div>
+    </div>
+
+    <!-- Civian -->
+    <div class="sb-coach" id="nav-civian" onclick="showCoach('civian')">
+      <div class="sb-av">C</div>
+      <div class="sb-ci">
+        <div class="sb-cn">Civian</div>
+        <div class="sb-cm">Systems &amp; Exec · 1/2+</div>
+      </div>
+      <div class="sb-dot"></div>
+    </div>
+
+  </div>
+  <div class="sb-footer">2 coaches active &nbsp;·&nbsp; Apr 2026</div>
+</nav>
+
+<!-- ══════ MAIN CONTENT ══════ -->
+<main class="main" id="main-scroll">
+
+<!-- ════════════════════════════════════════════
+     OVERVIEW PAGE
+════════════════════════════════════════════ -->
+<div id="page-overview" class="page active">
+
+  <div class="ov-head">
+    <div>
+      <h2>Development Overview</h2>
+      <div class="ov-head-sub">2 active coaches · 3 weeks running</div>
+    </div>
+    <div class="ov-head-right">
+      <strong>Week of 19 Apr 2026</strong>Week 3 of 4
+    </div>
+  </div>
+
+  <div class="stat-strip" style="grid-template-columns:repeat(5,1fr)">
+    <div class="stat-card">
+      <div class="sc-num">2</div>
+      <div class="sc-label">Active Coaches</div>
+      <div class="sc-sub">Vinny &amp; Civian</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-num green">3</div>
+      <div class="sc-label">Sessions Complete</div>
+      <div class="sc-sub">Vinny ×2 · Civian ×1</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-num green">4</div>
+      <div class="sc-label">Reflections In</div>
+      <div class="sc-sub">Vinny ×4 · Civian ×0</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-num">3<span style="font-size:20px;color:var(--t4)">+</span></div>
+      <div class="sc-label">Sessions Remaining</div>
+      <div class="sc-sub">Vinny ×2 · Civian ×1+</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-num green">3</div>
+      <div class="sc-label">Weeks Running</div>
+      <div class="sc-sub">Started 8 Apr 2026</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:24px">
+    <div>
+      <div class="card" style="margin-bottom:0">
+        <div class="ph">Coaches at a Glance</div>
+        <div class="ov-coaches">
+
+          <!-- Vinny overview card -->
+          <div class="ov-ccard" onclick="showCoach('vinny')">
+            <div class="ov-cc-inner">
+              <div class="ov-cc-left">
+                <div class="ov-av">V</div>
+                <div class="ov-av-info">
+                  <div class="ov-av-name">Vinny</div>
+                  <div class="ov-av-role">Foundational Development</div>
+                  <div class="ov-av-status">Active</div>
+                </div>
+              </div>
+              <div class="ov-cc-mid">
+                <div class="ov-cc-row">
+                  <div><div class="ov-mi-l">Sessions</div><div class="ov-mi-v">2 of 4</div></div>
+                  <div><div class="ov-mi-l">Reflections</div><div class="ov-mi-v" style="color:var(--green)">4 submitted</div></div>
+                  <div><div class="ov-mi-l">Next</div><div class="ov-mi-v">~22 Apr</div></div>
+                </div>
+                <div class="ov-prog-track"><div class="ov-prog-fill" style="width:50%"></div></div>
+              </div>
+              <div class="ov-cc-right">
+                <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Civian overview card -->
+          <div class="ov-ccard" onclick="showCoach('civian')">
+            <div class="ov-cc-inner">
+              <div class="ov-cc-left">
+                <div class="ov-av">C</div>
+                <div class="ov-av-info">
+                  <div class="ov-av-name">Civian</div>
+                  <div class="ov-av-role">Systems &amp; Execution</div>
+                  <div class="ov-av-status">Active</div>
+                </div>
+              </div>
+              <div class="ov-cc-mid">
+                <div class="ov-cc-row">
+                  <div><div class="ov-mi-l">Sessions</div><div class="ov-mi-v">1 of 2+</div></div>
+                  <div><div class="ov-mi-l">Next</div><div class="ov-mi-v">21 Apr (Tue)</div></div>
+                  <div><div class="ov-mi-l">Focus</div><div class="ov-mi-v">TeamBuildr</div></div>
+                </div>
+                <div class="ov-prog-track"><div class="ov-prog-fill" style="width:33%"></div></div>
+              </div>
+              <div class="ov-cc-right">
+                <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="ph">This Week</div>
+        <div class="this-week">
+          <div class="tw-item">
+            <div class="tw-date tw-date-sched">21 Apr · Tue</div>
+            <div class="tw-info">
+              <div class="tw-title">Civian — Session 2</div>
+              <div class="tw-sub">Systems review &amp; floor check-in · Scheduled</div>
+            </div>
+          </div>
+          <div class="tw-item">
+            <div class="tw-date tw-date-prep">~22 Apr · Wed</div>
+            <div class="tw-info">
+              <div class="tw-title">Vinny — Session 3</div>
+              <div class="tw-sub">Phase 3 &amp; 4 of Coach's Lens · Prepped</div>
+            </div>
+          </div>
+          <div class="tw-item">
+            <div class="tw-date tw-date-up">~29 Apr</div>
+            <div class="tw-info">
+              <div class="tw-title">Vinny — Session 4</div>
+              <div class="tw-sub">Phase 5 &amp; full review · Upcoming</div>
+            </div>
+          </div>
+          <div class="tw-item">
+            <div class="tw-date tw-date-up">~29 Apr</div>
+            <div class="tw-info">
+              <div class="tw-title">Vinny — Session 4 &amp; Cycle Review</div>
+              <div class="tw-sub">Final session + end-of-cycle development summary</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ════════════════════════════════════════════
+     VINNY PAGE
+════════════════════════════════════════════ -->
+<div id="page-vinny" class="page">
+
+  <div class="prof-banner">
+    <div class="pb-ring-area">
+      <div class="pb-ring-inner-wrap" style="position:relative;width:100px;height:100px">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#9E7A30"/>
+              <stop offset="100%" stop-color="#E8C56A"/>
+            </linearGradient>
+          </defs>
+          <circle class="pb-ring-track" cx="50" cy="50" r="42"/>
+          <circle class="pb-ring-fill" cx="50" cy="50" r="42"
+            stroke="url(#rg2)"
+            data-offset="131.95"
+            style="stroke-dashoffset:263.9;transform-origin:50px 50px;transform:rotate(-90deg)"/>
+        </svg>
+        <div class="pb-ring-inner">
+          <div class="pb-ring-n">2/4</div>
+          <div class="pb-ring-s">Done</div>
+        </div>
+      </div>
+    </div>
+    <div class="pb-info">
+      <h2>Vinny</h2>
+      <div class="pb-meta">
+        <span>Coach · Lockeroom</span>
+        <span>Start: 8 Apr 2026</span>
+        <span>Mentor: Andrew</span>
+        <span>4 Sessions Booked</span>
+      </div>
+    </div>
+    <div class="pb-kpis">
+      <div class="pk"><div class="pk-n">2</div><div class="pk-l">Sessions Done</div></div>
+      <div class="pk"><div class="pk-n">2</div><div class="pk-l">Remaining</div></div>
+      <div class="pk"><div class="pk-n" style="color:rgba(255,255,255,.2);font-size:18px">—</div><div class="pk-l">Formal Score</div></div>
+    </div>
+  </div>
+
+  <div class="tab-bar" id="vtabs">
+    <button class="tab-btn active" onclick="switchTab('v','profile',this)">Profile</button>
+    <button class="tab-btn" onclick="switchTab('v','dev',this)">Development Path</button>
+    <button class="tab-btn" onclick="switchTab('v','sess',this)">Sessions</button>
+    <button class="tab-btn" onclick="switchTab('v','refl',this)">Reflections <span class="refl-badge">4</span></button>
+  </div>
+
+  <!-- V: PROFILE -->
+  <div id="v-profile" class="tc active">
+    <div class="g2" style="margin-bottom:16px">
+      <div>
+        <div class="card">
+          <div class="ph">Identified Strengths</div>
+          <div class="tags">
+            <span class="tag tag-g">Builds client rapport</span>
+            <span class="tag tag-g">Engaged &amp; receptive</span>
+            <span class="tag tag-g">Strong self-awareness</span>
+            <span class="tag tag-g">Takes notes in sessions</span>
+            <span class="tag tag-g">Positive attitude</span>
+            <span class="tag tag-g">Instinct to support the floor</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ph">Growth Opportunities</div>
+          <div class="tags">
+            <span class="tag tag-gold">Cue quality &amp; specificity</span>
+            <span class="tag tag-gold">Equipment management</span>
+            <span class="tag tag-gold">Floor awareness — VIP standard</span>
+            <span class="tag tag-gold">Tactile cueing confidence</span>
+            <span class="tag tag-gold">Correcting technique confidently</span>
+            <span class="tag tag-gold">Managing floor conversations</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ph">Current Development Focus</div>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7">Progressing through the full <strong style="color:var(--t1)">Coach's Lens</strong> (5 phases). Sessions 1–2 established Setup and Initiation. Session 3 layers in Phase 3 (Movement Pattern) and Phase 4 (Points of Performance).<br><br>Parallel focus: <strong style="color:var(--t1)">tactile cueing</strong> — one point of contact, one purpose. Practising on the 45-degree back extension and seated row.</p>
+        </div>
+        <div class="card">
+          <div class="ph">Mentor Notes</div>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7">Very engaged and receptive across both sessions. Self-identifies gaps accurately and responds well to feedback. Foundations are solid. The next layer — Phases 3 &amp; 4 and tactile cueing — is where coaching quality will shift noticeably.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ph">Floor Observations</div>
+      <p style="font-size:12px;color:var(--t4);margin-bottom:18px">Drawn from self-assessment and mentor observations across Sessions 1–2. Formal scoring follows dedicated floor observation. Bars update as notes come in.</p>
+      <div class="obs-list">
+        <div class="obs-row">
+          <div class="obs-cat"><span class="obs-cat-num">1</span>Coaching Clarity</div>
+          <div class="obs-right">
+            <div class="obs-track"><div class="obs-fill" data-pct="40"></div></div>
+            <div class="obs-meta">
+              <span class="obs-label-val developing">Developing</span>
+              <span class="obs-note">Feedback frequency is good; cue specificity and targeting is the primary development area</span>
+            </div>
+          </div>
+        </div>
+        <div class="obs-row">
+          <div class="obs-cat"><span class="obs-cat-num">2</span>Observation &amp; Correction</div>
+          <div class="obs-right">
+            <div class="obs-track"><div class="obs-fill" data-pct="30"></div></div>
+            <div class="obs-meta">
+              <span class="obs-label-val developing">Early Stage</span>
+              <span class="obs-note">Coach's Lens introduced; applying Setup &amp; Initiation on push/pull movements — application still developing</span>
+            </div>
+          </div>
+        </div>
+        <div class="obs-row">
+          <div class="obs-cat"><span class="obs-cat-num">3</span>Session Execution</div>
+          <div class="obs-right">
+            <div class="obs-track"><div class="obs-fill" data-pct="40"></div></div>
+            <div class="obs-meta">
+              <span class="obs-label-val developing">Developing</span>
+              <span class="obs-note">Session structure understood; equipment management gap observed (trap bar, S2) — habit in progress</span>
+            </div>
+          </div>
+        </div>
+        <div class="obs-row">
+          <div class="obs-cat"><span class="obs-cat-num">4</span>Client Management</div>
+          <div class="obs-right">
+            <div class="obs-track"><div class="obs-fill" data-pct="58"></div></div>
+            <div class="obs-meta">
+              <span class="obs-label-val building">Building</span>
+              <span class="obs-note">Strong rapport and equal attention are natural strengths; working on managing extended floor conversations</span>
+            </div>
+          </div>
+        </div>
+        <div class="obs-row">
+          <div class="obs-cat"><span class="obs-cat-num">5</span>Systems &amp; Standards</div>
+          <div class="obs-right">
+            <div class="obs-track"><div class="obs-fill" data-pct="38"></div></div>
+            <div class="obs-meta">
+              <span class="obs-label-val developing">Developing</span>
+              <span class="obs-note">Floor awareness improving; VIP standard understood; equipment routines being built</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V: DEVELOPMENT PATH -->
+  <div id="v-dev" class="tc">
+    <div class="g2" style="margin-bottom:16px">
+      <div class="card">
+        <div class="ph">Primary Goal</div>
+        <p style="font-size:14px;color:var(--t2);line-height:1.7">Coaching quality on the floor — feedback on each lift with better, more targeted cues using the Coach's Lens and Cue Process.</p>
+      </div>
+      <div class="card">
+        <div class="ph">Secondary Goal</div>
+        <p style="font-size:14px;color:var(--t2);line-height:1.7">Floor awareness, equipment management, and client communication — delivering the Lockeroom VIP experience consistently.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Session Timeline</div>
+      <div class="dev-tl">
+        <div class="tl-track-wrap" style="left:calc(100%/8);width:calc(100%/4*3 - 100%/8)">
+          <div class="tl-track-bg"></div>
+          <div class="tl-track-prog" data-pct="50"></div>
+        </div>
+        <div class="tl-steps" style="grid-template-columns:repeat(4,1fr)">
+          <div class="tl-step"><div class="tl-dot d-done">✓</div><div class="tl-name">Session 1</div><div class="tl-date">8 Apr</div><div class="tl-badge tb-done">Complete</div></div>
+          <div class="tl-step"><div class="tl-dot d-done">✓</div><div class="tl-name">Session 2</div><div class="tl-date">15 Apr</div><div class="tl-badge tb-done">Complete</div></div>
+          <div class="tl-step"><div class="tl-dot d-now">3</div><div class="tl-name">Session 3</div><div class="tl-date">~22 Apr</div><div class="tl-badge tb-now">Prepped</div></div>
+          <div class="tl-step"><div class="tl-dot d-up">4</div><div class="tl-name">Session 4</div><div class="tl-date">~29 Apr</div><div class="tl-badge tb-up">Upcoming</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Session Focus</div>
+      <div class="sess-blocks g4">
+        <div class="sb sb-done"><div class="sbn">S1 · 8 Apr · ✓ Done</div><div class="sbt">Perfect Session + Coach's Lens Foundations</div><div class="sbd">5 core rules, floor awareness, VIP standard, Coach's Lens, Cue Process</div></div>
+        <div class="sb sb-done"><div class="sbn">S2 · 15 Apr · ✓ Done</div><div class="sbt">Floor Behaviour + Tactile Cueing Intro</div><div class="sbd">Equipment management, client population, 45-degree back extension practical</div></div>
+        <div class="sb sb-now"><div class="sbn">S3 · ~22 Apr · Prepped</div><div class="sbt">Phase 3 &amp; 4 — Movement &amp; Performance</div><div class="sbd">Layering coaching beyond reps, precision cues, seated row tactile cueing</div></div>
+        <div class="sb sb-up"><div class="sbn">S4 · ~29 Apr · Upcoming</div><div class="sbt">Phase 5 + Full Review</div><div class="sbd">Set Completion, full Coach's Lens consolidation, final review</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ph">Expected Outcome by End of Cycle</div>
+      <p style="font-size:14px;color:var(--t2);line-height:1.7">Vinny consistently applying all 5 phases of the Coach's Lens across push, pull, and posterior chain movements. Tactile cueing used with intention. Equipment managed proactively. Every client treated as a VIP. Coaching that goes beyond rep completion — specific, reasoned, targeted cues.</p>
+    </div>
+  </div>
+
+  <!-- V: SESSIONS -->
+  <div id="v-sess" class="tc">
+    <div class="stab-bar">
+      <button class="stab active" onclick="switchSess('v','s1',this)"><span class="stab-dot" style="color:var(--green)"></span>Session 1</button>
+      <button class="stab" onclick="switchSess('v','s2',this)"><span class="stab-dot" style="color:var(--green)"></span>Session 2</button>
+      <button class="stab" onclick="switchSess('v','s3',this)"><span class="stab-dot" style="color:var(--gold)"></span>Session 3</button>
+      <button class="stab" onclick="switchSess('v','s4',this)"><span class="stab-dot" style="color:var(--t4)"></span>Session 4</button>
+      <button class="stab" onclick="switchSess('v','fin',this)"><span class="stab-dot" style="color:var(--t4)"></span>Final Summary</button>
+    </div>
+
+    <!-- S1 -->
+    <div id="v-s1" class="stc active">
+      <div class="sess-hdr">
+        <div><div class="sh-title">Session 1 — Foundations</div><div class="sh-date">8 April 2026 · One-to-one · Andrew</div></div>
+        <span class="badge b-done">Complete</span>
+      </div>
+      <div class="sess-stats">
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>8 topics covered</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>3 commitments</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>~45 min</div>
+      </div>
+      <div class="insight-box">
+        <div class="insight-label">Key Insight — Session 1</div>
+        <div class="insight-text">"The goal isn't more feedback — it's better, more targeted coaching within each rep. Vinny already knows how to be present with a client; the next step is using the Coach's Lens to make every intervention land."</div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ph">What We Covered</div>
+            <div class="topic-grid">
+              <div class="topic-tile"><span class="tt-num">01</span><span class="tt-text">Perfect Session structure — 40-min framework</span></div>
+              <div class="topic-tile"><span class="tt-num">02</span><span class="tt-text">5 Core Session Rules self-assessment</span></div>
+              <div class="topic-tile"><span class="tt-num">03</span><span class="tt-text">Equipment management &amp; transition cues</span></div>
+              <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Floor awareness &amp; VIP member experience</span></div>
+              <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Coach's Lens — all 5 phases via back squat</span></div>
+              <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Cue Process — Observe → Diagnose → Intervene → Adjust → Substitute</span></div>
+              <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">"Same, better, or worse?" — client feedback cue</span></div>
+              <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Study task: exercise library via Coach's Lens</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ph">Commitments — Week Ahead</div>
+            <ul class="clist">
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Floor awareness — every member feels like a VIP, right of way respected at all times</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Equipment packed away as he goes — use transition strategies</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Push &amp; pull movements — nail Setup and Initiation phases specifically</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ph">Key Observations</div>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Came in self-aware and engaged. Accurately identified his biggest gap as <em>quality</em> of feedback, not frequency. Floor awareness raised proactively — no pushback. Took notes throughout.</p>
+          </div>
+          <div class="card">
+            <div class="ph">Reviewer Reflection</div>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Good session to build from. Coach's Lens and Cue Process landed well using the squat as a live example. Progression agreed: Setup + Initiation on push/pull first, then expand phase by phase.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div id="v-s2" class="stc">
+      <div class="sess-hdr">
+        <div><div class="sh-title">Session 2 — Floor Behaviour &amp; Tactile Cueing</div><div class="sh-date">15 April 2026 · One-to-one · Andrew</div></div>
+        <span class="badge b-done">Complete</span>
+      </div>
+      <div class="sess-stats">
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>10 topics covered</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>4 commitments</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>~45 min</div>
+      </div>
+      <div class="insight-box">
+        <div class="insight-label">Key Insight — Session 2</div>
+        <div class="insight-text">"One finger. One point. The touch directs attention, the word directs the action. Tactile cues work because the nervous system responds to touch — the client's brain lights up on that spot, and they can feel what they previously couldn't."</div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ph">What We Covered</div>
+            <div class="topic-grid">
+              <div class="topic-tile"><span class="tt-num">01</span><span class="tt-text">Trap bar — strip equipment when the set is done, not end of block</span></div>
+              <div class="topic-tile"><span class="tt-num">02</span><span class="tt-text">Client comms when stepping away to pack down</span></div>
+              <div class="topic-tile"><span class="tt-num">03</span><span class="tt-text">Managing floor conversations — redirect with intention</span></div>
+              <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Lockeroom client profile: sedentary, tight + weak posterior chain</span></div>
+              <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Tactile cueing gap self-identified (seated row, unprompted)</span></div>
+              <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Tactile cueing principle — one finger, one point</span></div>
+              <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">45-degree back extension: reframe as hip thrust, not back lift</span></div>
+              <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Rib cage, glute &amp; hamstring tactile cues with verbal pairings</span></div>
+              <div class="topic-tile"><span class="tt-num">09</span><span class="tt-text">Hyperextension block using the hand</span></div>
+              <div class="topic-tile"><span class="tt-num">10</span><span class="tt-text">Phase 3 vs Phase 4 distinction introduced</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ph">Commitments — Week Ahead</div>
+            <ul class="clist">
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Phase 3 vs Phase 4 — layer the coaching beyond rep completion</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Moving between clients — stay present during execution</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Strip heavy loaded equipment immediately (trap bar, barbells, dumbbells)</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Back himself to correct technique — use the framework confidently</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ph">Still Developing</div>
+            <p style="font-size:13px;color:var(--t3);line-height:1.6">Tactile cueing across other movements (seated row — to cover in Session 3). Phase 5 (Set Completion) not yet applied or observed on the floor.</p>
+          </div>
+          <div class="card">
+            <div class="ph">Session 3 Focus</div>
+            <div class="phase-grid" style="margin-top:4px">
+              <div class="phase-tile"><div class="pt-num">Phase 3</div><div class="pt-name">Movement Pattern</div><div class="pt-desc">Where does form break down under fatigue?</div></div>
+              <div class="phase-tile"><div class="pt-num">Phase 4</div><div class="pt-name">Points of Performance</div><div class="pt-desc">Precision cues — specific, reasoned, felt by the client</div></div>
+              <div class="phase-tile"><div class="pt-num">Tactile</div><div class="pt-name">Seated Row</div><div class="pt-desc">Cover the gap Vinny raised in Session 2</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div id="v-s3" class="stc">
+      <div class="sess-hdr">
+        <div><div class="sh-title">Session 3 — Phase 3 &amp; 4 Deep Dive</div><div class="sh-date">~22 April 2026 · Prepped · Not yet run</div></div>
+        <span class="badge b-prep">Prepped</span>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="ph">Planned Focus</div>
+        <div class="phase-grid">
+          <div class="phase-tile"><div class="pt-num">Phase 3</div><div class="pt-name">Movement Pattern</div><div class="pt-desc">Reading the full rep cycle — where does form break down under fatigue?</div></div>
+          <div class="phase-tile"><div class="pt-num">Phase 4</div><div class="pt-name">Points of Performance</div><div class="pt-desc">Precision cues — name the exact point, explain the why, tell the client what to feel</div></div>
+          <div class="phase-tile"><div class="pt-num">Tactile</div><div class="pt-name">Seated Row</div><div class="pt-desc">Cover the gap Vinny raised in Session 2 (unprompted)</div></div>
+        </div>
+      </div>
+      <div class="empty"><div class="empty-ico">📋</div><p>Session notes will be added after Session 3 is run (~22 Apr 2026)</p></div>
+    </div>
+
+    <div id="v-s4" class="stc">
+      <div class="sess-hdr"><div><div class="sh-title">Session 4 — Consolidation &amp; Final Review</div><div class="sh-date">~29 April 2026 · Not yet run</div></div><span class="badge b-pend">Upcoming</span></div>
+      <div class="empty"><div class="empty-ico">📅</div><p>Session notes will be added after Session 4 is run</p></div>
+    </div>
+
+    <div id="v-fin" class="stc">
+      <div class="sess-hdr"><div><div class="sh-title">Final Summary</div><div class="sh-date">End of development cycle</div></div><span class="badge b-pend">Pending</span></div>
+      <div class="empty"><div class="empty-ico">🏁</div><p>Completed at end of 4-session cycle</p></div>
+    </div>
+  </div>
+
+  <!-- V: REFLECTIONS -->
+  <div id="v-refl" class="tc">
+
+    <div class="refl-stats">
+      <div class="rs-card"><div class="rs-num green">4</div><div class="rs-lbl">Reflections</div></div>
+      <div class="rs-card"><div class="rs-num">21 Apr</div><div class="rs-lbl">Last Submitted</div></div>
+      <div class="rs-card"><div class="rs-num green">4/4</div><div class="rs-lbl">SBW Used</div></div>
+      <div class="rs-card"><div class="rs-num" style="font-size:18px;padding-top:4px">Strong</div><div class="rs-lbl">Avg Block Feel</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Recurring Themes</div>
+      <div class="theme-row">
+        <span class="theme-tag theme-win">✓ SBW question — used every block (4/4)</span>
+        <span class="theme-tag theme-win">✓ Setup &amp; Initiation — consistently applied</span>
+        <span class="theme-tag theme-win">✓ Tactile feedback — improving (Apr 16)</span>
+        <span class="theme-tag theme-win">✓ Equipment management — improving (Yes on Apr 20)</span>
+        <span class="theme-tag theme-win">✓ Phase 3 (Movement Pattern) — first application Apr 20</span>
+        <span class="theme-tag theme-win">✓ Proactive B series setup — applied Apr 20</span>
+        <span class="theme-tag theme-dev">→ Feedback to experienced clients — self-identified gap (Apr 20)</span>
+        <span class="theme-tag theme-dev">→ Back extension coaching — raised as learning goal</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ph">Block Reflections</div>
+      <p style="font-size:12px;color:var(--t4);margin-bottom:16px">Pulled from JotForm CSV export · 4 submissions · Last updated 21 Apr 2026</p>
+      <div class="refl-list">
+
+        <!-- Reflection 4 — Apr 20 -->
+        <div class="refl-card">
+          <div class="rc-head">
+            <div class="rc-date">Monday 21 April 2026 &nbsp;·&nbsp; <span style="font-weight:600;color:var(--t3)">Lunch block · Blyth</span></div>
+            <div class="rc-meta">
+              <span class="rc-role">Warm-Up Coach</span>
+              <span class="rc-feel strong">Strong</span>
+            </div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-field">
+              <div class="rc-fl">Did well this block</div>
+              <div class="rc-fv">Packing equipment and intervening for spotting when needed</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Improve next block</div>
+              <div class="rc-fv">Give good feedback to experienced clients</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Phase applied</div>
+              <div class="rc-fv">Phase 3 — Movement Pattern. Coached client to make sure every rep looked the same.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Proactive setup</div>
+              <div class="rc-fv">Setting up B series after last set of A series. A series equipment packed by end of B series.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">SBW Question</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — asked this block</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Equipment management</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — packed away as he went</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection 3 — Apr 16 -->
+        <div class="refl-card">
+          <div class="rc-head">
+            <div class="rc-date">Wednesday 16 April 2026 &nbsp;·&nbsp; <span style="font-weight:600;color:var(--t3)">3:55 pm – 7:35 pm</span></div>
+            <div class="rc-meta">
+              <span class="rc-role">Mixed Role</span>
+              <span class="rc-feel strong">Strong</span>
+            </div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-field">
+              <div class="rc-fl">Did well this block</div>
+              <div class="rc-fv">Used more tactile feedback when coaching</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Improve next block</div>
+              <div class="rc-fv">Packing weights away</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Coaching example</div>
+              <div class="rc-fv">Coached shoulder retraction &amp; depression in pulling movements. Corrected Kristy — holding DBs in the middle during pressing.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Phase applied</div>
+              <div class="rc-fv">Points of Performance &amp; Initiation</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">SBW Question</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — asked this block</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Equipment management</div>
+              <div class="rc-dot-row"><div class="rc-dot partial"></div>Partially — forgot to pack when moving to next session</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection 2 — Apr 15 -->
+        <div class="refl-card">
+          <div class="rc-head">
+            <div class="rc-date">Tuesday 15 April 2026 &nbsp;·&nbsp; <span style="font-weight:600;color:var(--t3)">Morning block</span></div>
+            <div class="rc-meta">
+              <span class="rc-role">Mixed Role</span>
+              <span class="rc-feel strong">Strong</span>
+            </div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-field">
+              <div class="rc-fl">Did well this block</div>
+              <div class="rc-fv">Focused on Setup and Initiation phases of the Coach's Lens</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Improve next block</div>
+              <div class="rc-fv">Start using other phases of the Coach's Lens</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Coaching example</div>
+              <div class="rc-fv">Coached setup for DB bench press — use your knees and start from the top.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Phase applied</div>
+              <div class="rc-fv">Setup &amp; Initiation on DB bench press</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">SBW Question</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — asked this block</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Equipment management</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — packed away as he went</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflection 1 — Apr 14 -->
+        <div class="refl-card">
+          <div class="rc-head">
+            <div class="rc-date">Monday 14 April 2026 &nbsp;·&nbsp; <span style="font-weight:600;color:var(--t3)">9:00 am – 7:30 pm</span></div>
+            <div class="rc-meta">
+              <span class="rc-role">Mixed Role</span>
+              <span class="rc-feel solid">Solid</span>
+            </div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-field">
+              <div class="rc-fl">Did well this block</div>
+              <div class="rc-fv">Focused on packing away weights after each superset. Applied Setup &amp; Initiation of the Coach's Lens.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Improve next block</div>
+              <div class="rc-fv">Provide more valuable feedback for each exercise coached</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Coaching example</div>
+              <div class="rc-fv">Coached bench press setup &amp; initiation — keep shoulders on bench and drive with intent.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Phase applied</div>
+              <div class="rc-fv">Setup &amp; Initiation — DB bench press positioning</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">SBW Question</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — asked this block</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Equipment management</div>
+              <div class="rc-dot-row"><div class="rc-dot partial"></div>Partially — worrying about next setup got in the way</div>
+            </div>
+            <div class="rc-field rc-full">
+              <div class="rc-fl">Bring to Session 2</div>
+              <div class="rc-fv">Learn how to coach the back extension exercise</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /v-refl -->
+
+</div><!-- /vinny -->
+
+
+<!-- ════════════════════════════════════════════
+     CIVIAN PAGE
+════════════════════════════════════════════ -->
+<div id="page-civian" class="page">
+
+  <div class="prof-banner">
+    <div class="pb-ring-area">
+      <div class="pb-ring-inner-wrap" style="position:relative;width:100px;height:100px">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle class="pb-ring-track" cx="50" cy="50" r="42"/>
+          <circle class="pb-ring-fill" cx="50" cy="50" r="42"
+            stroke="url(#rg2)"
+            data-offset="197.9"
+            style="stroke-dashoffset:263.9;transform-origin:50px 50px;transform:rotate(-90deg)"/>
+        </svg>
+        <div class="pb-ring-inner">
+          <div class="pb-ring-n">1/2<span style="font-size:12px;opacity:.5">+</span></div>
+          <div class="pb-ring-s">Done</div>
+        </div>
+      </div>
+    </div>
+    <div class="pb-info">
+      <h2>Civian</h2>
+      <div class="pb-meta">
+        <span>Coach · Lockeroom</span>
+        <span>Start: 15 Apr 2026</span>
+        <span>Mentor: Andrew</span>
+        <span>Sessions: Tuesdays</span>
+      </div>
+    </div>
+    <div class="pb-kpis">
+      <div class="pk"><div class="pk-n">1</div><div class="pk-l">Sessions Done</div></div>
+      <div class="pk"><div class="pk-n">1+</div><div class="pk-l">Remaining</div></div>
+      <div class="pk"><div class="pk-n" style="color:rgba(255,255,255,.2);font-size:18px">—</div><div class="pk-l">Formal Score</div></div>
+    </div>
+  </div>
+
+  <div class="tab-bar" id="ctabs">
+    <button class="tab-btn active" onclick="switchTab('c','profile',this)">Profile</button>
+    <button class="tab-btn" onclick="switchTab('c','dev',this)">Development Path</button>
+    <button class="tab-btn" onclick="switchTab('c','sess',this)">Sessions</button>
+    <button class="tab-btn" onclick="switchTab('c','refl',this)">Reflections</button>
+  </div>
+
+  <!-- C: PROFILE -->
+  <div id="c-profile" class="tc active">
+    <div class="g2" style="margin-bottom:16px">
+      <div>
+        <div class="card">
+          <div class="ph">Identified Strengths</div>
+          <div class="tags">
+            <span class="tag tag-g">Positive energy &amp; attitude</span>
+            <span class="tag tag-g">Genuinely enjoys coaching</span>
+            <span class="tag tag-g">Good self-awareness</span>
+            <span class="tag tag-g">Arrives early (base habit)</span>
+            <span class="tag tag-g">No defensiveness about feedback</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ph">Growth Opportunities</div>
+          <div class="tags">
+            <span class="tag tag-gold">iPad / recording time</span>
+            <span class="tag tag-gold">Splitting attention across two clients</span>
+            <span class="tag tag-gold">TeamBuildr system use</span>
+            <span class="tag tag-gold">Proactive session setup</span>
+            <span class="tag tag-gold">Communication during transitions</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="ph">Current Development Focus</div>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7">Systems onboarding — <strong style="color:var(--t1)">TeamBuildr</strong> as a pre-session prep tool: arrive early, open the tablet, know every client's program before they walk through the door.<br><br>Floor flow mastery — <strong style="color:var(--t1)">managing two clients</strong> simultaneously: alternating movements, proactive setup, and communicating throughout.</p>
+        </div>
+        <div class="card">
+          <div class="ph">Mentor Notes</div>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7">Strong start — came in with good self-awareness and no resistance to feedback. Gaps are behavioural (habits and systems), not attitudinal. Building blocks are in place; the work is building consistent routines.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ph">Floor Observations</div>
+      <p style="font-size:12px;color:var(--t4);margin-bottom:18px">Informal notes captured when Andrew is on the floor at the same time. No floor observation data yet for Civian — bars will populate after Session 2 and floor time.</p>
+      <div class="obs-list">
+        <div class="obs-row"><div class="obs-cat"><span class="obs-cat-num">1</span>Coaching Clarity</div><div class="obs-right"><div class="obs-track"><div class="obs-fill" data-pct="0"></div></div><div class="obs-meta"><span class="obs-pending">Pending</span><span class="obs-note">No floor observation recorded yet</span></div></div></div>
+        <div class="obs-row"><div class="obs-cat"><span class="obs-cat-num">2</span>Observation &amp; Correction</div><div class="obs-right"><div class="obs-track"><div class="obs-fill" data-pct="0"></div></div><div class="obs-meta"><span class="obs-pending">Pending</span><span class="obs-note">No floor observation recorded yet</span></div></div></div>
+        <div class="obs-row"><div class="obs-cat"><span class="obs-cat-num">3</span>Session Execution</div><div class="obs-right"><div class="obs-track"><div class="obs-fill" data-pct="0"></div></div><div class="obs-meta"><span class="obs-pending">Pending</span><span class="obs-note">No floor observation recorded yet</span></div></div></div>
+        <div class="obs-row"><div class="obs-cat"><span class="obs-cat-num">4</span>Client Management</div><div class="obs-right"><div class="obs-track"><div class="obs-fill" data-pct="0"></div></div><div class="obs-meta"><span class="obs-pending">Pending</span><span class="obs-note">No floor observation recorded yet</span></div></div></div>
+        <div class="obs-row"><div class="obs-cat"><span class="obs-cat-num">5</span>Systems &amp; Standards</div><div class="obs-right"><div class="obs-track"><div class="obs-fill" data-pct="0"></div></div><div class="obs-meta"><span class="obs-pending">Pending</span><span class="obs-note">No floor observation recorded yet</span></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: DEVELOPMENT PATH -->
+  <div id="c-dev" class="tc">
+    <div class="g2" style="margin-bottom:16px">
+      <div class="card"><div class="ph">Primary Goal</div><p style="font-size:14px;color:var(--t2);line-height:1.7">Systems onboarding — TeamBuildr used consistently for pre-session prep. Never going into a session blind on client programs.</p></div>
+      <div class="card"><div class="ph">Secondary Goal</div><p style="font-size:14px;color:var(--t2);line-height:1.7">Managing two clients with coaching quality maintained — alternating movements, proactive setup, and consistent communication throughout.</p></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Session Timeline</div>
+      <div class="dev-tl">
+        <div class="tl-track-wrap" style="left:calc(100%/6);width:calc(100%/3*2 - 100%/6)">
+          <div class="tl-track-bg"></div>
+          <div class="tl-track-prog" data-pct="50"></div>
+        </div>
+        <div class="tl-steps" style="grid-template-columns:repeat(3,1fr)">
+          <div class="tl-step"><div class="tl-dot d-done">✓</div><div class="tl-name">Session 1</div><div class="tl-date">15 Apr</div><div class="tl-badge tb-done">Complete</div></div>
+          <div class="tl-step"><div class="tl-dot d-now">2</div><div class="tl-name">Session 2</div><div class="tl-date">21 Apr</div><div class="tl-badge tb-now">Scheduled</div></div>
+          <div class="tl-step"><div class="tl-dot d-up">+</div><div class="tl-name">Further</div><div class="tl-date">TBC</div><div class="tl-badge tb-up">May expand</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Session Focus</div>
+      <div class="sess-blocks g2">
+        <div class="sb sb-done"><div class="sbn">S1 · 15 Apr · ✓ Done</div><div class="sbt">Systems Onboarding + Managing Two Clients</div><div class="sbd">TeamBuildr intro, pre-session prep checklist, 4 floor flow strategies, exercise library</div></div>
+        <div class="sb sb-now"><div class="sbn">S2 · 21 Apr · Scheduled</div><div class="sbt">Systems Review + Floor Check-In</div><div class="sbd">Review TeamBuildr and Elevate adoption, check floor flow habits from Session 1 commitments</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="ph">Expected Outcome</div><p style="font-size:14px;color:var(--t2);line-height:1.7">Civian consistently using TeamBuildr as a pre-session prep tool. Client programs loaded and reviewed before every block. Floor flow improved — proactive setup, communication throughout, equal attention across both clients. iPad time brief and purposeful.</p></div>
+  </div>
+
+  <!-- C: SESSIONS -->
+  <div id="c-sess" class="tc">
+    <div class="stab-bar">
+      <button class="stab active" onclick="switchSess('c','s1',this)"><span class="stab-dot" style="color:var(--green)"></span>Session 1</button>
+      <button class="stab" onclick="switchSess('c','s2',this)"><span class="stab-dot" style="color:var(--gold)"></span>Session 2</button>
+      <button class="stab" onclick="switchSess('c','fin',this)"><span class="stab-dot" style="color:var(--t4)"></span>Final Summary</button>
+    </div>
+    <div id="c-s1" class="stc active">
+      <div class="sess-hdr">
+        <div><div class="sh-title">Session 1 — Systems Onboarding &amp; Floor Flow</div><div class="sh-date">15 April 2026 · One-to-one · Andrew</div></div>
+        <span class="badge b-done">Complete</span>
+      </div>
+      <div class="sess-stats">
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>10 topics covered</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>4 commitments</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>~45 min</div>
+      </div>
+      <div class="insight-box">
+        <div class="insight-label">Key Insight — Session 1</div>
+        <div class="insight-text">"The client should always know what you're doing and feel like they're being looked after — even when you're not standing next to them. Communication is what keeps the relationship intact when you're managing two people at once."</div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ph">What We Covered</div>
+            <div class="topic-grid">
+              <div class="topic-tile"><span class="tt-num">01</span><span class="tt-text">Perfect Session structure — 40-min framework</span></div>
+              <div class="topic-tile"><span class="tt-num">02</span><span class="tt-text">Self-identified gaps: iPad time &amp; splitting attention</span></div>
+              <div class="topic-tile"><span class="tt-num">03</span><span class="tt-text">TeamBuildr — first introduction as prep tool</span></div>
+              <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Elevate — cross-referencing client notes</span></div>
+              <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Pre-session prep checklist (repeatable routine)</span></div>
+              <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Exercise library for self-directed study</span></div>
+              <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Strategy 1: Alternate movements for natural coverage</span></div>
+              <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Strategy 2: Proactive setup during rest/final sets</span></div>
+              <div class="topic-tile"><span class="tt-num">09</span><span class="tt-text">Strategy 3: Communication keeps the relationship intact</span></div>
+              <div class="topic-tile"><span class="tt-num">10</span><span class="tt-text">Strategy 4: Flexible exercise order within a series</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ph">Commitments — Week Ahead</div>
+            <ul class="clist">
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Open TeamBuildr early — load clients, review programs before they arrive</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Practise alternating client movements — think about what each can do independently</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Proactive setup — use rest periods and final sets to get the next station ready</li>
+              <li><span class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Communicate everything — narrate what you're doing when recording or moving</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ph">Key Observations</div>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Positive energy, no defensiveness. Self-identified gaps accurately. Arrives early already — strong base habit. The gap is making that early arrival structured and productive.</p>
+          </div>
+          <div class="card">
+            <div class="ph">Reviewer Reflection</div>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Clean first session. TeamBuildr was genuinely new ground. The floor flow framework was well received — connected with the four strategies quickly. Good base for Session 2.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="c-s2" class="stc">
+      <div class="sess-hdr"><div><div class="sh-title">Session 2 — Systems Review &amp; Floor Check-In</div><div class="sh-date">Tuesday 21 April 2026 · Scheduled · Tuesdays fixed going forward</div></div><span class="badge b-sched">Scheduled</span></div>
+      <div class="empty"><div class="empty-ico">📋</div><p>Session notes will be added after Session 2 is run (21 Apr 2026)</p></div>
+    </div>
+    <div id="c-fin" class="stc">
+      <div class="sess-hdr"><div><div class="sh-title">Final Summary</div><div class="sh-date">End of development cycle</div></div><span class="badge b-pend">Pending</span></div>
+      <div class="empty"><div class="empty-ico">🏁</div><p>Completed at end of Civian's development cycle</p></div>
+    </div>
+  </div>
+
+  <!-- C: REFLECTIONS -->
+  <div id="c-refl" class="tc">
+    <div class="refl-stats">
+      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">0</div><div class="rs-lbl">Reflections</div></div>
+      <div class="rs-card"><div class="rs-num" style="font-size:16px;padding-top:6px;color:var(--t4)">None yet</div><div class="rs-lbl">Last Submitted</div></div>
+      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">—</div><div class="rs-lbl">SBW Used</div></div>
+      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">—</div><div class="rs-lbl">Avg Block Feel</div></div>
+    </div>
+    <div class="empty"><div class="empty-ico">📝</div><p>No reflections submitted yet. Civian's reflections will appear here once the JotForm is shared with him and submissions start coming in.</p></div>
+  </div>
+
+</div><!-- /civian -->
+
+</main>
+</div><!-- /app-layout -->
+
+<script>
+function setNav(id){
+  document.querySelectorAll('.sb-item,.sb-coach').forEach(function(el){
+    el.classList.remove('active');
+  });
+  var el=document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+function showOverview(){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('page-overview').classList.add('active');
+  setNav('nav-overview');
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function showCoach(c){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('page-'+c).classList.add('active');
+  setNav('nav-'+c);
+  document.getElementById('main-scroll').scrollTop=0;
+  setTimeout(animateRings,120);
+  setTimeout(animateBars,250);
+  setTimeout(animateTracks,120);
+}
+function switchTab(coach,tab,btn){
+  var bar=document.getElementById(coach==='v'?'vtabs':'ctabs');
+  bar.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  ['profile','dev','sess','refl'].forEach(function(t){
+    var el=document.getElementById(coach+'-'+t);
+    if(el) el.classList.remove('active');
+  });
+  var target=document.getElementById(coach+'-'+tab);
+  if(target) target.classList.add('active');
+  if(tab==='profile') setTimeout(animateBars,100);
+  if(tab==='dev') setTimeout(animateTracks,100);
+}
+function switchSess(coach,sess,btn){
+  var p=btn.closest('.tc');
+  p.querySelectorAll('.stab').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  p.querySelectorAll('.stc').forEach(function(c){c.classList.remove('active')});
+  var t=document.getElementById(coach+'-'+sess);
+  if(t) t.classList.add('active');
+}
+function animateRings(){
+  document.querySelectorAll('.page.active .pb-ring-fill').forEach(function(el){
+    var target=parseFloat(el.getAttribute('data-offset'));
+    el.style.transition='stroke-dashoffset 1.4s cubic-bezier(.25,.46,.45,.94)';
+    el.style.strokeDashoffset=target;
+  });
+}
+function animateBars(){
+  document.querySelectorAll('.page.active .obs-fill').forEach(function(el){
+    var pct=parseFloat(el.getAttribute('data-pct')||0);
+    setTimeout(function(){el.style.width=pct+'%'},60);
+  });
+}
+function animateTracks(){
+  document.querySelectorAll('.page.active .tl-track-prog').forEach(function(el){
+    var pct=parseFloat(el.getAttribute('data-pct')||0);
+    setTimeout(function(){el.style.width=pct+'%'},60);
+  });
+}
+</script>
+</body>
+</html>
