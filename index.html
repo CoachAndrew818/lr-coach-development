@@ -604,9 +604,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <div class="sc-sub">Vinny ×3 · Civian ×2</div>
     </div>
     <div class="stat-card">
-      <div class="sc-num green">4</div>
+      <div class="sc-num green">5</div>
       <div class="sc-label">Reflections In</div>
-      <div class="sc-sub">Vinny ×4 · Civian ×0</div>
+      <div class="sc-sub">Vinny ×4 · Civian ×1</div>
     </div>
     <div class="stat-card">
       <div class="sc-num">2<span style="font-size:20px;color:var(--t4)">+</span></div>
@@ -1333,7 +1333,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     <button class="tab-btn active" onclick="switchTab('c','profile',this)">Profile</button>
     <button class="tab-btn" onclick="switchTab('c','dev',this)">Development Path</button>
     <button class="tab-btn" onclick="switchTab('c','sess',this)">Sessions</button>
-    <button class="tab-btn" onclick="switchTab('c','refl',this)">Reflections</button>
+    <button class="tab-btn" onclick="switchTab('c','refl',this)">Reflections <span class="refl-badge">1</span></button>
   </div>
 
   <!-- C: PROFILE -->
@@ -1533,12 +1533,71 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
   <!-- C: REFLECTIONS -->
   <div id="c-refl" class="tc">
     <div class="refl-stats">
-      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">0</div><div class="rs-lbl">Reflections</div></div>
-      <div class="rs-card"><div class="rs-num" style="font-size:16px;padding-top:6px;color:var(--t4)">None yet</div><div class="rs-lbl">Last Submitted</div></div>
-      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">—</div><div class="rs-lbl">SBW Used</div></div>
-      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">—</div><div class="rs-lbl">Avg Block Feel</div></div>
+      <div class="rs-card"><div class="rs-num green">1</div><div class="rs-lbl">Reflections</div></div>
+      <div class="rs-card"><div class="rs-num">23 Apr</div><div class="rs-lbl">Last Submitted</div></div>
+      <div class="rs-card"><div class="rs-num" style="color:var(--t4)">N/A</div><div class="rs-lbl">SBW</div></div>
+      <div class="rs-card"><div class="rs-num" style="font-size:18px;padding-top:4px">Solid</div><div class="rs-lbl">Avg Block Feel</div></div>
     </div>
-    <div class="empty"><div class="empty-ico">📝</div><p>No reflections submitted yet. Civian's reflections will appear here once the JotForm is shared with him and submissions start coming in.</p></div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="ph">Recurring Themes</div>
+      <div class="theme-row">
+        <span class="theme-tag theme-win">✓ Communication — clear, specific, consistent throughout</span>
+        <span class="theme-tag theme-win">✓ TeamBuildr + Elevate prep — thorough, including client health history</span>
+        <span class="theme-tag theme-win">✓ Two clients managed — proactive setup using last sets</span>
+        <span class="theme-tag theme-dev">→ Session flow — needed to double-check iPad mid-session</span>
+        <span class="theme-tag theme-dev">→ Equal attention — harder when clients on different programs</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ph">Block Reflections</div>
+      <p style="font-size:12px;color:var(--t4);margin-bottom:16px">Pulled from JotForm · 1 submission · Last updated 23 Apr 2026</p>
+      <div class="refl-list">
+
+        <!-- Reflection 1 — 23 Apr -->
+        <div class="refl-card">
+          <div class="rc-head">
+            <div class="rc-date">Wednesday 23 April 2026 &nbsp;·&nbsp; <span style="font-weight:600;color:var(--t3)">8am block</span></div>
+            <div class="rc-meta">
+              <span class="rc-role">Support Coach</span>
+              <span class="rc-feel solid">Solid</span>
+            </div>
+          </div>
+          <div class="rc-body">
+            <div class="rc-field">
+              <div class="rc-fl">Did well this block</div>
+              <div class="rc-fv">Maintaining clear and consistent communication with clients throughout — told them how many sets, what exercises were coming, and explained every time he was logging data on the iPad.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Improve next block</div>
+              <div class="rc-fv">Improve session flow to avoid double-checking the iPad mid-session. Ensure equal attention across clients even when programs differ.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">For Andrew</div>
+              <div class="rc-fv">Feedback on improving flow and proactive setup — so sessions run smoothly and clients get an even better experience.</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">TeamBuildr prep</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — reviewed programs, setup and location, training history and progression</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Elevate / client notes</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — noted David Morris has knee and lower back issues; checked in during relevant exercises</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Floor management</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Yes — used last set of each block to set up next; clients on similar programs, flow worked well</div>
+            </div>
+            <div class="rc-field">
+              <div class="rc-fl">Two clients</div>
+              <div class="rc-dot-row"><div class="rc-dot yes"></div>Mostly — forgot next exercise once and had to check iPad; otherwise managed well</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 
 </div><!-- /civian -->
