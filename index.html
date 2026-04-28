@@ -143,7 +143,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
   transition:box-shadow .2s,border-color .2s
 }
 .ov-ccard:hover{box-shadow:var(--shadow);border-color:var(--gold-b)}
-.ov-cc-inner{display:grid;grid-template-columns:190px minmax(0,1fr) 120px;align-items:center;gap:0}
+.ov-cc-inner{display:grid;grid-template-columns:190px minmax(0,1fr);align-items:stretch;gap:0}
 .ov-cc-left{
   background:var(--s2);padding:18px 22px;
   display:flex;align-items:center;gap:14px;
@@ -166,13 +166,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 }
 .ov-av-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.ov-cc-mid{padding:18px 24px}
+.ov-cc-mid{padding:18px 24px;display:flex;flex-direction:column}
+.ov-cc-footer{display:flex;justify-content:flex-end;margin-top:14px}
 .ov-cc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
 .ov-mi-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t4)}
 .ov-mi-v{font-size:13px;font-weight:700;color:var(--t1);margin-top:3px;white-space:nowrap}
 .ov-prog-track{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;border:1px solid var(--s3)}
 .ov-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#E8C56A)}
-.ov-cc-right{padding:18px 16px;display:flex;align-items:center;justify-content:center}
+.ov-cc-right{display:none}
 .ov-cta{
   background:var(--s2);color:var(--t2);
   border:1px solid var(--s3);
@@ -193,6 +194,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
   display:flex;align-items:flex-start;gap:12px;
   box-shadow:var(--shadow-sm)
 }
+.tw-item-done{opacity:.55}
+.tw-divider{height:1px;background:var(--s3);margin:2px 0}
 .tw-date{
   padding:5px 10px;border-radius:6px;
   font-size:11px;font-weight:800;
@@ -644,9 +647,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
                   <div><div class="ov-mi-l">Next</div><div class="ov-mi-v" style="color:var(--gold)">Today · 2pm</div></div>
                 </div>
                 <div class="ov-prog-track"><div class="ov-prog-fill" style="width:75%"></div></div>
-              </div>
-              <div class="ov-cc-right">
-                <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                <div class="ov-cc-footer">
+                  <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </div>
               </div>
             </div>
           </div>
@@ -669,9 +672,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
                   <div><div class="ov-mi-l">Focus</div><div class="ov-mi-v">Two clients</div></div>
                 </div>
                 <div class="ov-prog-track"><div class="ov-prog-fill" style="width:66%"></div></div>
-              </div>
-              <div class="ov-cc-right">
-                <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                <div class="ov-cc-footer">
+                  <button class="ov-cta">View <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </div>
               </div>
             </div>
           </div>
@@ -685,20 +688,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
         <div class="ph">Recent &amp; Upcoming</div>
         <div class="this-week">
           <div class="tw-item">
-            <div class="tw-date tw-date-done">22 Apr · Wed</div>
-            <div class="tw-info">
-              <div class="tw-title">Vinny — Session 3 ✓</div>
-              <div class="tw-sub">Joint session · Phase 3/4 breakthrough · Complete</div>
-            </div>
-          </div>
-          <div class="tw-item">
-            <div class="tw-date tw-date-done">22 Apr · Wed</div>
-            <div class="tw-info">
-              <div class="tw-title">Civian — Session 2 ✓</div>
-              <div class="tw-sub">Equipment standard + communication review · Complete</div>
-            </div>
-          </div>
-          <div class="tw-item">
             <div class="tw-date tw-date-sched">28 Apr · Today</div>
             <div class="tw-info">
               <div class="tw-title">Vinny — Session 4</div>
@@ -710,6 +699,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
             <div class="tw-info">
               <div class="tw-title">Civian — Session 3</div>
               <div class="tw-sub">Two-client floor management + flow fix · Prepped</div>
+            </div>
+          </div>
+          <div class="tw-divider"></div>
+          <div class="tw-item tw-item-done">
+            <div class="tw-date tw-date-done">22 Apr · Wed</div>
+            <div class="tw-info">
+              <div class="tw-title">Vinny — Session 3 ✓</div>
+              <div class="tw-sub">Joint session · Phase 3/4 breakthrough · Complete</div>
+            </div>
+          </div>
+          <div class="tw-item tw-item-done">
+            <div class="tw-date tw-date-done">22 Apr · Wed</div>
+            <div class="tw-info">
+              <div class="tw-title">Civian — Session 2 ✓</div>
+              <div class="tw-sub">Equipment standard + communication review · Complete</div>
             </div>
           </div>
         </div>
