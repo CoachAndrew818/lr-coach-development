@@ -519,6 +519,32 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
   .pb-ring-area{padding:22px}
   .pb-info{padding:0 22px 22px}
 }
+
+/* ── Summary Accordions ─────────────────────────────────────── */
+.summ-acc{margin-top:14px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.summ-acc-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:var(--bg);cursor:pointer;user-select:none;transition:background .15s}
+.summ-acc-bar:hover{background:var(--card)}
+.sab-title{font-size:12.5px;font-weight:700;color:var(--t2);letter-spacing:.2px}
+.sab-arrow{font-size:11px;color:var(--t3);transition:transform .2s;display:inline-block}
+.summ-acc.open .sab-arrow{transform:rotate(180deg)}
+.summ-inner{display:none}
+.summ-acc.open .summ-inner{display:block}
+.summ-tab-row{display:flex;border-bottom:1px solid var(--border);background:var(--bg)}
+.summ-tab-btn{flex:1;padding:9px 6px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--t2);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.summ-tab-btn.active{color:var(--green);border-bottom-color:var(--green)}
+.summ-pane{display:none;padding:16px 18px;max-height:420px;overflow-y:auto}
+.summ-pane.active{display:block}
+.summ-pane h3{font-size:11px;font-weight:700;color:var(--t1);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.summ-pane h3:first-child{margin-top:0}
+.summ-pane p{font-size:13px;color:var(--t2);line-height:1.7;margin:0 0 10px}
+.summ-pane ul,.summ-pane ol{padding-left:18px;margin:0 0 10px}
+.summ-pane li{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:4px}
+.summ-pane strong{color:var(--t1);font-weight:600}
+.summ-pane em{font-style:italic}
+.summ-empty{font-size:13px;color:var(--t3);font-style:italic;text-align:center;padding:24px 16px}
+.summ-pane .srow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
+.summ-pane .srow:last-child{border-bottom:none}
+.summ-pane .srow-k{color:var(--t2)}.summ-pane .srow-v{font-weight:600;color:var(--t1)}
 </style>
 </head>
 <body>
@@ -563,11 +589,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <div class="sb-dot"></div>
     </div>
 
-    <!-- Civian -->
-    <div class="sb-coach" id="nav-civian" onclick="showCoach('civian')">
+    <!-- Civan -->
+    <div class="sb-coach" id="nav-civan" onclick="showCoach('civan')">
       <div class="sb-av">C</div>
       <div class="sb-ci">
-        <div class="sb-cn">Civian</div>
+        <div class="sb-cn">Civan</div>
         <div class="sb-cm">Systems &amp; Exec · 4/4 ✓</div>
       </div>
       <div class="sb-dot"></div>
@@ -599,22 +625,22 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     <div class="stat-card">
       <div class="sc-num">2</div>
       <div class="sc-label">Active Coaches</div>
-      <div class="sc-sub">Vinny &amp; Civian</div>
+      <div class="sc-sub">Vinny &amp; Civan</div>
     </div>
     <div class="stat-card">
       <div class="sc-num green">9</div>
       <div class="sc-label">Sessions Complete</div>
-      <div class="sc-sub">Vinny ×5 · Civian ×4</div>
+      <div class="sc-sub">Vinny ×5 · Civan ×4</div>
     </div>
     <div class="stat-card">
       <div class="sc-num green">5</div>
       <div class="sc-label">Reflections In</div>
-      <div class="sc-sub">Vinny ×4 · Civian ×1</div>
+      <div class="sc-sub">Vinny ×4 · Civan ×1</div>
     </div>
     <div class="stat-card">
       <div class="sc-num">1</div>
       <div class="sc-label">Sessions Upcoming</div>
-      <div class="sc-sub">Civian S5 · ~23 May</div>
+      <div class="sc-sub">Civan S5 · ~23 May</div>
     </div>
     <div class="stat-card">
       <div class="sc-num green">5</div>
@@ -654,22 +680,22 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
             </div>
           </div>
 
-          <!-- Civian overview card -->
-          <div class="ov-ccard" onclick="showCoach('civian')">
+          <!-- Civan overview card -->
+          <div class="ov-ccard" onclick="showCoach('civan')">
             <div class="ov-cc-inner">
               <div class="ov-cc-left">
                 <div class="ov-av">C</div>
                 <div class="ov-av-info">
-                  <div class="ov-av-name">Civian</div>
+                  <div class="ov-av-name">Civan</div>
                   <div class="ov-av-role">Systems &amp; Execution</div>
                   <div class="ov-av-status">Active</div>
                 </div>
               </div>
               <div class="ov-cc-mid">
                 <div class="ov-cc-row">
-                  <div><div class="ov-mi-l">Sessions</div><div class="ov-mi-v" style="color:var(--green)">4/4 ✓</div></div>
-                  <div><div class="ov-mi-l">Next</div><div class="ov-mi-v">S5 · ~23 May</div></div>
-                  <div><div class="ov-mi-l">Status</div><div class="ov-mi-v" style="color:var(--green)">Cycle Complete ✓</div></div>
+                  <div><div class="ov-mi-l">Sessions</div><div class="ov-mi-v">4 done</div></div>
+                  <div><div class="ov-mi-l">Reflections</div><div class="ov-mi-v" style="color:var(--green)">1 submitted</div></div>
+                  <div><div class="ov-mi-l">Latest Score</div><div class="ov-mi-v" style="color:var(--green)">4.3 avg ✓</div></div>
                 </div>
                 <div class="ov-prog-track"><div class="ov-prog-fill" style="width:100%"></div></div>
                 <div class="ov-cc-footer">
@@ -697,7 +723,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <div class="tw-item">
             <div class="tw-date tw-date-up">S5 · ~23 May</div>
             <div class="tw-info">
-              <div class="tw-title">Civian — Session 5</div>
+              <div class="tw-title">Civan — Session 5</div>
               <div class="tw-sub">2-week cadence · First session after initial cycle completion · Upcoming</div>
             </div>
           </div>
@@ -705,14 +731,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <div class="tw-item tw-item-done">
             <div class="tw-date tw-date-done">9 May · Fri</div>
             <div class="tw-info">
-              <div class="tw-title">Civian — Session 4 ✓</div>
+              <div class="tw-title">Civan — Session 4 ✓</div>
               <div class="tw-sub">Final session of initial cycle · Joint with Vinny · Core coaching + stability before mobilisation · Complete</div>
             </div>
           </div>
           <div class="tw-item tw-item-done">
             <div class="tw-date tw-date-done">6 May · Wed</div>
             <div class="tw-info">
-              <div class="tw-title">Vinny + Civian — Session 5 ✓</div>
+              <div class="tw-title">Vinny + Civan — Session 5 ✓</div>
               <div class="tw-sub">Joint session · TeamBuilder + pacing + core exercise coaching practical · Complete</div>
             </div>
           </div>
@@ -726,7 +752,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <div class="tw-item tw-item-done">
             <div class="tw-date tw-date-done">29 Apr · Wed</div>
             <div class="tw-info">
-              <div class="tw-title">Civian — Session 3 ✓</div>
+              <div class="tw-title">Civan — Session 3 ✓</div>
               <div class="tw-sub">Positioning practical · Never turn your back principle · Complete</div>
             </div>
           </div>
@@ -921,7 +947,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
         <div class="sb sb-done"><div class="sbn">S2 · 15 Apr · ✓ Done</div><div class="sbt">Floor Behaviour + Tactile Cueing Intro</div><div class="sbd">Equipment management, client population, 45-degree back extension practical</div></div>
         <div class="sb sb-done"><div class="sbn">S3 · 22 Apr · ✓ Done</div><div class="sbt">Joint Session + Phase 3/4 Breakthrough</div><div class="sbd">Trap bar safety, coaching presence, joint timing concept, conventional deadlift demo</div></div>
         <div class="sb sb-done"><div class="sbn">S4 · 29 Apr · ✓ Done</div><div class="sbt">Positioning + Cue Conviction</div><div class="sbd">Floor simulation — two-client management, 3D movement observation, cue conviction at distance.</div></div>
-        <div class="sb sb-done"><div class="sbn">S5 · 6 May · ✓ Done</div><div class="sbt">Programming + Core Exercise Coaching</div><div class="sbd">Joint session with Civian — TeamBuilder/rehab, session pacing, client intensity, core practical (plank, hollow hold, dead bugs, crunch). Stability before mobilisation.</div></div>
+        <div class="sb sb-done"><div class="sbn">S5 · 6 May · ✓ Done</div><div class="sbt">Programming + Core Exercise Coaching</div><div class="sbd">Joint session with Civan — TeamBuilder/rehab, session pacing, client intensity, core practical (plank, hollow hold, dead bugs, crunch). Stability before mobilisation.</div></div>
       </div>
     </div>
     <div class="card">
@@ -969,6 +995,44 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Cue Process — Observe → Diagnose → Intervene → Adjust → Substitute</span></div>
               <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">"Same, better, or worse?" — client feedback cue</span></div>
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Study task: exercise library via Coach's Lens</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'vs1-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs1-c')">Vinny</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs1-a')">Andrew's Notes</button>
+                </div>
+                <div id="vs1-j" class="summ-pane active"><h3>Overview</h3>
+<p>First one-to-one mentoring session. Covered onboarding standards, the Perfect Session framework, gym floor etiquette, and an introduction to the two core coaching frameworks. Vinny was engaged, receptive, and left with clear commitments.</p>
+<h3>What Was Covered</h3>
+<p><strong>Perfect Session Standards</strong> — walked through the 40-minute structure and 5 Core Session Rules. Strengths: delivering an enjoyable session and equal attention between members. Self-identified opportunities: quality of feedback and equipment management.</p>
+<p><strong>Gym Floor Etiquette</strong> — post-session cleanliness and the VIP standard for every member on the floor. How to flex his role when spare time comes up (check with lead coach first).</p>
+<p><strong>Coach's Lens</strong> — 5-phase framework (Setup, Initiation, Movement Pattern, Points of Performance, Set Completion) introduced via a barbell back squat practical.</p>
+<p><strong>Cue Process</strong> — Observe → Diagnose → Intervene → Adjust → Substitute. Run 2–3 correction cycles before considering substitution.</p>
+<h3>Key Development Areas</h3>
+<div class="srow"><span class="srow-k">Session execution &amp; timing</span><span class="srow-v">Strong</span></div>
+<div class="srow"><span class="srow-k">Floor awareness &amp; member experience</span><span class="srow-v">Developing</span></div>
+<div class="srow"><span class="srow-k">Equipment management</span><span class="srow-v">Developing</span></div>
+<div class="srow"><span class="srow-k">Coaching quality — feedback on each lift</span><span class="srow-v">Priority focus</span></div>
+<h3>Commitments</h3>
+<ul><li>Floor awareness — every member treated as a VIP, right of way respected</li><li>Equipment packed away as he goes</li><li>Coaching focus — push and pull movements; nail Setup and Initiation via Coach's Lens</li></ul></div>
+                <div id="vs1-c" class="summ-pane"><h3>The Perfect Session</h3>
+<p>40-minute structure and the 5 Core Session Rules. Strengths: delivering an enjoyable session and giving equal attention between members. Opportunities: feedback quality on each lift and equipment management.</p>
+<h3>Gym Floor Awareness</h3>
+<p>Every member on the floor — whether you're directly coaching them or not — should feel like a VIP inside Lockeroom. Members have right of way at all times. When you have spare time during a session, check in with the lead coach first before jumping in.</p>
+<h3>The Coach's Lens</h3>
+<p>5-phase framework: <strong>1. Setup</strong> · <strong>2. Initiation</strong> · <strong>3. Movement Pattern</strong> · <strong>4. Points of Performance</strong> · <strong>5. Set Completion</strong>. Before coaching anything, identify which phase the issue is happening in. If Setup and Initiation are right, the rest usually follows.</p>
+<h3>The Cue Process</h3>
+<p>When something isn't working: <strong>Observe → Diagnose → Intervene → Adjust → Substitute</strong>. Go through 2–3 cycles before considering a swap. After an adjustment, ask: <em>"Is that the same, better, or worse?"</em></p>
+<h3>Your Focus This Week</h3>
+<ul><li><strong>Floor awareness</strong> — every member feels like a VIP; right of way, presence, attention</li><li><strong>Equipment as you go</strong> — pack away as soon as a client finishes; use that moment to transition them smoothly</li><li><strong>Push and pull movements</strong> — study Setup and Initiation phases using the Coach's Lens</li></ul></div>
+                <div id="vs1-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1024,6 +1088,43 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">09</span><span class="tt-text">Hyperextension block using the hand</span></div>
               <div class="topic-tile"><span class="tt-num">10</span><span class="tt-text">Phase 3 vs Phase 4 distinction introduced</span></div>
             </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'vs2-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs2-c')">Vinny</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs2-a')">Andrew's Notes</button>
+                </div>
+                <div id="vs2-j" class="summ-pane active"><h3>Overview</h3>
+<p>Productive session — Vinny was engaged, self-reflective, and came prepared with his own observations. Focus shifted to practical coaching competency: tactile cueing and understanding the Lockeroom client population.</p>
+<h3>What Was Covered</h3>
+<p><strong>Progress review</strong> — applying elements of the Coach's Lens on the floor, particularly Setup and Initiation on upper body pressing.</p>
+<p><strong>Client context</strong> — most Lockeroom clients are sedentary, desk-based, inactive for many years. Tight and weak posterior chains, default movement pattern that over-relies on the lower back.</p>
+<p><strong>Floor awareness — equipment &amp; conversations</strong> — strip loaded equipment as soon as a set is done. Communicate to the client in the moment. Redirect floor conversations back to coaching naturally.</p>
+<p><strong>Tactile cueing</strong> — Vinny self-identified he wasn't confident using tactile cues (where to place hands, what to achieve). This is a normal gap. The 45° back extension practical introduced the principles.</p>
+<p><strong>45° back extension walkthrough</strong> — glute/hamstring activation before movement, single-finger touch to direct attention, rib cage positioning, blocking hyperextension, reframing initiation as hip thrust not back lift.</p>
+<h3>Commitments</h3>
+<ul><li>Phase 3 vs 4 — layer coaching beyond rep completion</li><li>Moving between clients — stay present during execution</li><li>Strip heavy loaded equipment immediately (trap bar, barbells, dumbbells)</li><li>Back himself to correct technique — use the framework confidently</li></ul></div>
+                <div id="vs2-c" class="summ-pane"><h3>Floor Habits</h3>
+<p><strong>Equipment:</strong> When finished with loaded equipment (like the trap bar) — strip it straight away. Tell the client: <em>"I'm just going to unpack this — I'll be with you in a second."</em> Clients often help with plates; the key is you initiating.</p>
+<p><strong>Conversations:</strong> Rapport matters, but redirect conversations when they run long. Use the next exercise to bring focus back: <em>"Love it — okay, let's chat while we get you set up for this next one."</em></p>
+<h3>Understanding Your Clients</h3>
+<p>Most Lockeroom clients are sedentary. Tight hips, hamstrings, lower back — and those areas are also weak. When you put them on the 45° back extension, they'll feel it in their lower back — that's expected. Your job: shift the load to glutes and hamstrings. The lower back <em>stabilises</em>; the glutes and hamstrings <em>lift</em>.</p>
+<h3>Tactile Cueing</h3>
+<p>Tactile cues draw attention — they're not about force. <strong>One finger, one point of contact.</strong> Your touch tells the client where to think; your verbal cue tells them what to do. For many clients, this is the first time they've felt what a muscle feels like under load.</p>
+<h3>45° Back Extension — How to Coach It</h3>
+<p><strong>Setup:</strong> Get glute and hamstring engagement before movement starts. One finger on the side of the glute, one at the hamstring belly.</p>
+<p><strong>Initiation:</strong> Reframe as a hip thrust — <em>"Drive your hips through, like a hip thrust. Drive forward, don't lift up."</em></p>
+<p><strong>Points of Performance:</strong> Rib cage down throughout. Hand-block hyperextension at the top.</p>
+<h3>Your Focus This Week</h3>
+<ul><li>Phase 3 vs 4 — find what can be improved in every rep, not just whether it happened</li><li>Keep moving between clients — don't leave them for extended periods</li><li>Equipment — trap bar and barbells stripped as soon as the set is done</li><li>Be confident correcting — that's exactly what you're there for</li></ul></div>
+                <div id="vs2-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
@@ -1055,7 +1156,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     <!-- S3 -->
     <div id="v-s3" class="stc">
       <div class="sess-hdr">
-        <div><div class="sh-title">Session 3 — Joint Session + Phase 3/4 Breakthrough</div><div class="sh-date">22 April 2026 · Joint session with Civian · Andrew</div></div>
+        <div><div class="sh-title">Session 3 — Joint Session + Phase 3/4 Breakthrough</div><div class="sh-date">22 April 2026 · Joint session with Civan · Andrew</div></div>
         <span class="badge b-done">Complete</span>
       </div>
       <div class="sess-stats">
@@ -1076,10 +1177,46 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">02</span><span class="tt-text">Coaching presence — declarative language, body language, projecting confidence</span></div>
               <div class="topic-tile"><span class="tt-num">03</span><span class="tt-text">Floor positioning — mirror technique &amp; rep window for managing two clients</span></div>
               <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Co-coaching protocol — real incident addressed (early session start)</span></div>
-              <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Movement practicals — trap bar deadlift, incline DB press (Vinny &amp; Civian coaching each other)</span></div>
+              <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Movement practicals — trap bar deadlift, incline DB press (Vinny &amp; Civan coaching each other)</span></div>
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Lat engagement &amp; universal bracing cue — framework for all hinge patterns</span></div>
               <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Joint angle/timing concept — both angles open together; lag = disconnection</span></div>
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Conventional deadlift — live Phase 3 vs Phase 4 contrast (sound rep vs broken rep)</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'vs3-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs3-c')">Vinny</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs3-a')">Andrew's Notes</button>
+                </div>
+                <div id="vs3-j" class="summ-pane active"><h3>Overview</h3>
+<p>Significant development session — format shifted to joint with Civan, creating a peer learning environment. Addressed two specific floor incidents directly (client injuries and protocol breach). Strong conceptual breakthroughs across Phase 3/4 and the bracing principle.</p>
+<h3>What Was Covered</h3>
+<p><strong>Trap bar safety</strong> — two separate clients sustained back injuries being coached by Vinny on the trap bar. Raised directly. Non-negotiables established: mandatory setup check before every set, side-on positioning to see the spine, brace cue enforced every rep, stop the set if form breaks.</p>
+<p><strong>Coaching presence and confidence</strong> — more confident, declarative language needed on the floor. Present instructions as instructions, not suggestions. Project more. Use body language.</p>
+<p><strong>Floor positioning — managing two clients</strong> — mirror technique when benches are in front of it. Rep window concept: first several reps of a safe set create a window to check and cue the other client. Co-coaching protocol reinforced after a real incident.</p>
+<p><strong>Movement practicals</strong> — Vinny coached Civan on trap bar deadlift; Civan coached Vinny on incline DB press. Andrew demonstrated both in teaching mode.</p>
+<p><strong>Conventional deadlift — Phase 3 vs Phase 4 breakthrough</strong> — joint angle timing concept: the angle at the knee and the angle between torso and thigh should open simultaneously. Live demo of sound rep vs deliberately broken rep made the distinction immediately concrete.</p>
+<h3>Commitments</h3>
+<ul><li>Implementing more tactile cues across all movements</li><li>Positioning — mirrors and rep windows; maintain sight of both clients</li><li>Confident and direct delivery — speak up, use body language, instruct don't suggest</li></ul></div>
+                <div id="vs3-c" class="summ-pane"><h3>Trap Bar — Building Confidence with the Movement</h3>
+<p>Non-negotiable before every pull: <strong>big breath in, brace like someone's about to punch you, hold it through the whole rep.</strong> Pair with lat engagement cue and the setup check (hinge to grip, flat back confirmed before tension goes on). Side-on to see the spine. If the back rounds — weight comes down.</p>
+<h3>Coaching Presence — Speaking Up and Owning the Floor</h3>
+<p>Delivery is still too quiet and instructions sometimes come across as suggestions. The shift is in language and conviction: <em>"Push your feet through the floor"</em> instead of <em>"Can you try to push your feet through the floor?"</em> Same instruction — completely different impact. Use your body: demonstrate, use your hands, show them the position.</p>
+<h3>Positioning — Seeing Both Clients at Once</h3>
+<ul><li>Benches in front of mirror — use the reflection to track your second client while with the first</li><li>Rep window — first several reps are the safe window; check the other client, call a cue, and come back</li></ul>
+<h3>Conventional Deadlift — Joint Angles and Timing</h3>
+<p>Watch for two angles: the angle at the knee, and the angle between torso and thigh. <strong>Both should be opening at the same time</strong> as the lift progresses. If one lags behind the other — there's a disconnection, something's compensating.</p>
+<h3>Phase 3 vs Phase 4 — The Live Demo</h3>
+<p>A technically sound rep, then a rep where the bar moved A to B but everything else was wrong. The bar moving from A to B — that's Phase 3. <em>How well</em> it was executed — that's Phase 4. That's what we're coaching.</p>
+<h3>Your Focus This Week</h3>
+<ul><li>Trap bar protocol — every session, every client: setup check, brace every rep, side-on, weight down if form breaks</li><li>Speak up and own it — louder, more body language, declarative language</li><li>Positioning — use the mirror and the rep window; always know where both clients are</li><li>Tactile cues — use them deliberately, one hand with intention</li></ul></div>
+                <div id="vs3-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1094,7 +1231,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           </div>
           <div class="card">
             <div class="ph">Key Observations</div>
-            <p style="font-size:14px;color:var(--t2);line-height:1.7">Received difficult feedback — 2 client injuries — without defensiveness. Engaged with the joint timing concept immediately. Strong conceptual breakthroughs across Phase 3/4 and the bracing principle. Still quiet when delivering cues to Civian — needs to project more on the floor.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Received difficult feedback — 2 client injuries — without defensiveness. Engaged with the joint timing concept immediately. Strong conceptual breakthroughs across Phase 3/4 and the bracing principle. Still quiet when delivering cues to Civan — needs to project more on the floor.</p>
           </div>
           <div class="card">
             <div class="ph">Scorecard — Session 3</div>
@@ -1142,6 +1279,41 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Equipment management — still flagged; habit not yet automatic</span></div>
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Action assigned: list exercises to break down together in next development conversation</span></div>
             </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'vs4-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs4-c')">Vinny</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs4-a')">Andrew's Notes</button>
+                </div>
+                <div id="vs4-j" class="summ-pane active"><h3>Overview</h3>
+<p>Deliberately narrow scope — focused on two things only, with the intention of embedding them well rather than covering more ground. Format was a practical floor simulation using imaginary clients, with Vinny physically navigating the space and narrating decisions in real time.</p>
+<h3>What Was Covered</h3>
+<p><strong>Floor positioning — managing two clients</strong> — worked through a specific two-client scenario: James (trap bar deadlift and dead bugs) and Lauren (dumbbell bench press and seated row). Vinny physically walked through where to stand, what to say to each client, and how to manage transitions. Goal: keep both clients visible, build comfort coaching from a short distance.</p>
+<p><strong>Positioning to observe movement — building a 3D picture</strong> — addressed the habit of watching from one fixed angle. A coach watching from the front of a squat or deadlift is missing depth, spinal position, and joint angle timing. Changing position is a coaching decision, chosen deliberately based on what needs to be seen, without losing awareness of the second client.</p>
+<p><strong>Coaching conviction from a distance</strong> — cues need volume, directness, and timing when delivered from a distance. Shift from delivering cues only when standing beside the client to calling clear instructions from across the room.</p>
+<p><strong>Exercise questions — ongoing development</strong> — Vinny identified exercises where he's not fully confident. Asked to write them down and bring them to future development conversations.</p>
+<h3>Notes for Jarryd</h3>
+<p>One of the more coachable coaches worked with. His understanding is ahead of his automatic execution — the remaining development work is making the right habits show up under the pressure of live sessions. Most important to observe on the floor: positioning to see both clients, and equipment managed during sessions rather than after.</p></div>
+                <div id="vs4-c" class="summ-pane"><h3>Floor Positioning — Where You Stand Is a Coaching Decision</h3>
+<p>Floor simulation with two imaginary clients — James (trap bar deadlift and dead bugs) and Lauren (dumbbell bench press and seated row). You physically moved through the space, called your position out loud, and narrated your decisions in real time.</p>
+<p>You don't need to be standing directly next to a client to coach them. A short-distance verbal cue lets you keep both clients in your sightline at the same time. Neither client should feel like you've abandoned them.</p>
+<h3>Movement Observation — Building a 3D Picture</h3>
+<p>You have a habit of watching from one position — most often the front. From the front: knee tracking and bilateral symmetry. From the side: depth, spinal position, torso angle, and joint angle timing. A coach who stays in one spot makes decisions with incomplete information.</p>
+<p>The question to ask before every set: <em>"What am I trying to see from here? Is this the best angle for this movement?"</em> The side is the primary position for squats and hinges — get there before the first rep.</p>
+<h3>Coaching Conviction — Your Cues Need to Carry</h3>
+<div class="srow"><span class="srow-k"><em>"Can you try to drive your knees out?"</em></span><span class="srow-v" style="color:var(--red)">Suggestion</span></div>
+<div class="srow"><span class="srow-k"><em>"Drive your knees out."</em></span><span class="srow-v" style="color:var(--green)">Instruction ✓</span></div>
+<p style="margin-top:10px">Call the cue mid-rep, when the client can actually use it. Project the volume to wherever they are. Sound like you know exactly what you saw and exactly what you want.</p>
+<h3>Your Commitments from Session 4</h3>
+<ul><li>Every session: find a position where you can see both clients; deliver cues from a distance</li><li>Every new exercise: start in the right position. The side is primary for squats and hinges</li><li>Every cue: instructions, not suggestions. Project the volume. Call it mid-rep</li><li>Exercise questions: write them down and bring to next development conversation</li></ul></div>
+                <div id="vs4-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
@@ -1168,12 +1340,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
     <div id="v-s5" class="stc">
       <div class="sess-hdr">
-        <div><div class="sh-title">Session 5 — Core Exercise Coaching</div><div class="sh-date">6 May 2026 · Joint session — Vinny &amp; Civian · Andrew · ~40 min</div></div>
+        <div><div class="sh-title">Session 5 — Core Exercise Coaching</div><div class="sh-date">6 May 2026 · Joint session — Vinny &amp; Civan · Andrew · ~40 min</div></div>
         <span class="badge b-done">Complete</span>
       </div>
       <div class="sess-stats">
         <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>4 focus areas</div>
-        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>5 commitments</div>
+        <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>5 commitments</div>
         <div class="ss-chip"><div class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>~40 min</div>
       </div>
       <div class="insight-box">
@@ -1193,6 +1365,49 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Dead bugs — watch the lower back not the limbs; movement stops if back lifts; slow the reach</span></div>
               <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Crunch vs sit-up — distinction, common faults (neck pull, momentum); lower back sensitivity modifications</span></div>
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Tactile cueing — one point, one direction; hand on lower back for floor contact feedback</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'vs5-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs5-c')">Vinny</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'vs5-a')">Andrew's Notes</button>
+                </div>
+                <div id="vs5-j" class="summ-pane active"><h3>Overview</h3>
+<p>Joint session delivered to Vinny and Civan simultaneously. Conversational first half (programming and delivery standards), then a hands-on practical focused on core exercise coaching. Both coaches engaged strongly throughout — question quality showed genuine engagement rather than passive listening.</p>
+<h3>What Was Covered</h3>
+<p><strong>TeamBuilder and programming review</strong> — if rehab is programmed, it gets done. Coach's job is to facilitate it, understand it, and monitor the client through it. Skipping physio-prescribed exercises undermines a clinical recommendation.</p>
+<p><strong>Session pacing</strong> — Perfect Session timing framework. C series is the flex point: most clients on two sets. Add a third if running ahead; hold at two if running behind. The coach should never send a client home early.</p>
+<p><strong>Client intensity and appropriate load</strong> — check program history in TeamBuilder before the session, then use the warm-up as the diagnostic. Read the individual; don't assume based on appearance or demographic.</p>
+<p><strong>Core exercise coaching — practical section</strong> — triggered by a client reporting back pain after a session (most likely plank execution). Covered: planks, hollow holds, dead bugs, sit-ups, and crunch variations — progressions and regressions for each. Coaching format: Vinny coached Civan, Civan coached Vinny, Andrew corrected and built.</p>
+<p><strong>Central concept: stability before mobilisation</strong> — establish position and activate the correct muscles before adding any load through movement or lever length.</p>
+<p><strong>Tactile cueing</strong> — one point of contact, one direction, comfortable for both parties.</p>
+<h3>Development Assessment</h3>
+<p>Breakthrough was around progressive coaching for beginners. Both coaches were approaching exercises at the level of experienced clients. The shift: for beginners, build the foundation first — establish position, activate, confirm they're feeling it, then progress. Both coaches connected this directly to current clients — the best indicator it will transfer to the floor.</p>
+<h3>Commitments</h3>
+<ul><li>Rehab exercises — if programmed, it gets done. Check at the start of every session</li><li>Session pacing — follow Perfect Session timing; use C series as flex point</li><li>Client load — check history; use the warm-up to observe; make an informed call</li><li>Core coaching — stability before mobilisation on every exercise</li><li>Tactile cues — one point, one direction, comfortable for both parties</li></ul></div>
+                <div id="vs5-c" class="summ-pane"><h3>Rehab Exercises</h3>
+<p>If a client has rehab exercises programmed, they get done. These are typically physio-prescribed — the physio expects them completed as part of the client's recovery plan. Check at the start of the session, know what it is and why, and monitor the client through it. Don't let it get skipped.</p>
+<h3>Session Pacing</h3>
+<p>Follow the Perfect Session timing guidelines. The C series is your flex point. Most clients are on two sets — if you're running ahead, add a third. If you're running over, keep it at two and finish on time. A client should never be finishing their session early.</p>
+<h3>Reading Your Clients — Intensity and Load</h3>
+<p>Before every session, check the client's history in TeamBuilder. Use the warm-up as your diagnostic. If movement quality is strong, move toward their programme numbers. If something needs attention, scale back and explain why. Don't assume based on how someone looks — the history and the warm-up tell you what you need to know.</p>
+<h3>Core Exercise Coaching — Stability Before Mobilisation</h3>
+<p>Establish stability — core engagement, correct position, the right muscles switched on — before adding any load through movement or lever length.</p>
+<p><strong>Plank:</strong> Forearms flat, elbows under shoulders, hips in line. Brace before the hold begins. 2–3 cues in a 30-second hold. Side-on to see the hip line.</p>
+<p><strong>Hollow hold:</strong> Lower back staying flat is the non-negotiable. Find the point where it wants to come off the floor, then hold just above it. Regression: bend knees, arms by sides, one limb at a time.</p>
+<p><strong>Dead bugs:</strong> Arms vertical to ceiling, knees to tabletop, lower back flat before any limb moves. If the back arches, the rep stops. Slow the movement right down.</p>
+<p><strong>Sit-ups and crunches:</strong> Crunch is upper curl only, lower back stays on floor. Sit-up is full range, controlled descent. Common faults: pulling on the neck, using momentum.</p>
+<h3>Tactile Cueing</h3>
+<p>One point of contact, one direction, comfortable for both parties. A hand on the lower back gives feedback on whether they're maintaining floor contact. A light touch at the ribs helps them feel where the engagement should come from.</p>
+<h3>Your Commitments</h3>
+<ul><li>Rehab exercises — if programmed, it gets done. Check for it at the start of every session</li><li>Session pacing — follow Perfect Session timing; use C series as your flex point</li><li>Client load — check history before the session; use the warm-up to observe</li><li>Core coaching — stability before mobilisation on every exercise</li><li>Tactile cues — one point, one direction, comfortable for both parties</li></ul></div>
+                <div id="vs5-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
           <div class="card">
@@ -1426,7 +1641,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 <!-- ════════════════════════════════════════════
      CIVIAN PAGE
 ════════════════════════════════════════════ -->
-<div id="page-civian" class="page">
+<div id="page-civan" class="page">
 
   <div class="prof-banner">
     <div class="pb-ring-area">
@@ -1445,7 +1660,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       </div>
     </div>
     <div class="pb-info">
-      <h2>Civian</h2>
+      <h2>Civan</h2>
       <div class="pb-meta">
         <span>Coach · Lockeroom</span>
         <span>Start: 15 Apr 2026</span>
@@ -1591,7 +1806,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
         <div class="sb sb-done"><div class="sbn">S4 · 9 May · ✓ Done</div><div class="sbt">Core Exercise Coaching + Cycle Complete</div><div class="sbd">Joint session with Vinny — stability before mobilisation, core exercise progressions, tactile cueing. Final session of initial cycle.</div></div>
       </div>
     </div>
-    <div class="card"><div class="ph">Cycle Outcome — Achieved</div><p style="font-size:14px;color:var(--t2);line-height:1.7">All goals from the initial cycle achieved. Civian is consistently using TeamBuildr as a pre-session prep tool, managing two clients simultaneously with strong communication, equipment management embedded and intentional, and now coaching core exercises with the stability-before-mobilisation principle. Ready to operate independently at full volume in May. Ongoing floor observation recommended as volume increases.</p></div>
+    <div class="card"><div class="ph">Cycle Outcome — Achieved</div><p style="font-size:14px;color:var(--t2);line-height:1.7">All goals from the initial cycle achieved. Civan is consistently using TeamBuildr as a pre-session prep tool, managing two clients simultaneously with strong communication, equipment management embedded and intentional, and now coaching core exercises with the stability-before-mobilisation principle. Ready to operate independently at full volume in May. Ongoing floor observation recommended as volume increases.</p></div>
   </div>
 
   <!-- C: SESSIONS -->
@@ -1632,6 +1847,48 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Strategy 2: Proactive setup during rest/final sets</span></div>
               <div class="topic-tile"><span class="tt-num">09</span><span class="tt-text">Strategy 3: Communication keeps the relationship intact</span></div>
               <div class="topic-tile"><span class="tt-num">10</span><span class="tt-text">Strategy 4: Flexible exercise order within a series</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'cs1-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs1-c')">Civan</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs1-a')">Andrew's Notes</button>
+                </div>
+                <div id="cs1-j" class="summ-pane active"><h3>Overview</h3>
+<p>First one-to-one mentoring session. Focus: systems onboarding — TeamBuildr, pre-session prep structure, and managing two clients across the gym floor. Civan came in positive, agreed development areas were accurate, and left with clear commitments and tools to start using immediately.</p>
+<h3>What Was Covered</h3>
+<p><strong>Perfect Session Standards</strong> — walked through the 40-minute structure and 5 Core Session Rules. Coaching is at an acceptable standard — development focus is on the operational layer: systems usage, pre-session preparation, and client management across two people simultaneously. Self-identified priorities: not spending too long at the iPad and splitting attention more consistently.</p>
+<p><strong>Systems Onboarding — TeamBuildr</strong> — first introduction. Guidance: arrive early, open the tablet, load clients for the next session, and review programs before they arrive. Walk onto the floor already knowing what each client is doing.</p>
+<p><strong>Pre-Session Prep Checklist</strong> — repeatable routine: arrive early, work through the checklist, be set up before clients arrive.</p>
+<p><strong>Managing Two Clients — Floor Flow</strong> — four practical strategies: alternating movements for natural coverage, proactive setup during rest periods, flexible exercise ordering, and communication as the core tool (briefing clients when moving, calling cues from a distance).</p>
+<h3>Key Development Areas</h3>
+<div class="srow"><span class="srow-k">Client management — two clients</span><span class="srow-v">Priority focus</span></div>
+<div class="srow"><span class="srow-k">iPad/tablet time</span><span class="srow-v">Priority focus</span></div>
+<div class="srow"><span class="srow-k">TeamBuildr usage</span><span class="srow-v">Starting from zero</span></div>
+<div class="srow"><span class="srow-k">Pre-session preparation</span><span class="srow-v">Developing</span></div>
+<h3>Commitments</h3>
+<ul><li>Come in early and open TeamBuildr — load clients, review program before every block</li><li>Use the pre-session prep checklist — build it as a routine</li><li>Practise floor flow — alternate movements, proactive setup, flexible exercise ordering</li><li>Communicate throughout — tell clients what you're doing whenever moving, recording, or setting up</li></ul></div>
+                <div id="cs1-c" class="summ-pane"><h3>The Perfect Session</h3>
+<p>40-minute structure and 5 Core Session Rules. Good energy and solid coaching instincts — the development focus for you is on the systems layer and managing time and attention across two clients.</p>
+<p>Biggest opportunities right now: keeping iPad time brief and purposeful, and splitting your attention consistently between both clients throughout the session.</p>
+<h3>TeamBuildr — Getting Started</h3>
+<p>Come in early before each block, open the tablet, load your clients, and review their program before they arrive. Get comfortable with the system by using it — open it before every block, have a look around. Use the exercise library to learn movement names and standards.</p>
+<h3>Pre-Session Prep Checklist</h3>
+<ul><li>Who's in this block and what are they doing? Confirm before the session starts</li><li>TeamBuildr open — program reviewed, exercises confirmed for each client</li><li>Elevate checked — client notes read, anything flagged actioned</li><li>Equipment setup done in advance — stations ready before clients arrive</li><li>Roles confirmed with the team — Lead, Support, Warm-up all know the plan</li></ul>
+<h3>Managing Two Clients — Floor Flow</h3>
+<p><strong>Alternate movements:</strong> order exercises so you can be present for the moments that need your direct attention while the other client works independently.</p>
+<p><strong>Set up ahead of time:</strong> use rest periods and final sets to get the next station ready. No dead time, no scrambling.</p>
+<p><strong>Flexible exercise order:</strong> if a series has two exercises, start the client on the simpler one while you set up the other. They're moving the whole time.</p>
+<p><strong>Communicate everything:</strong> <em>"Just putting your numbers in — give me one second."</em> Keep calling out cues even while moving: <em>"Sit up taller," "Pull all the way through."</em></p>
+<h3>Your Focus This Week</h3>
+<ul><li>Come in early and open TeamBuildr every session</li><li>Use the prep checklist — build the habit of arriving with structure</li><li>Practise the floor flow — think about how to order movements and use rest periods for setup</li><li>Communicate everything</li></ul></div>
+                <div id="cs1-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1682,6 +1939,41 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Context: May ramp-up to ~25 sessions/week — foundations being laid now</span></div>
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">TeamBuildr familiarity — building exercise recognition before volume increases</span></div>
             </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'cs2-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs2-c')">Civan</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs2-a')">Andrew's Notes</button>
+                </div>
+                <div id="cs2-j" class="summ-pane active"><h3>Overview</h3>
+<p>Shorter catch-up format — Civan has primarily been running boxing sessions and has only coached one weight session since Session 1. Reviewed what he'd tried, introduced the equipment standard, and set foundations for when session load increases significantly in May.</p>
+<h3>What Was Covered</h3>
+<p><strong>Session 1 Commitments — Review</strong> — limited reps but the communication piece was tested. Tried it in his one weight session and reported an immediate difference: the session felt smoother and his client never felt unattended. Connected the action to the outcome without prompting. Strong early indicator.</p>
+<p><strong>Floor Observation — Equipment Standard</strong> — rig attachments left on after sessions finished, equipment left behind when stepping off the floor. No end-of-session scan observed. Civan received this as a genuine blind spot — no defensiveness, immediate buy-in.</p>
+<p><strong>Equipment Away as You Go</strong> — commercial gym principle: use it, return it, free it up for the next person. Practical example: DB bench press done → rack the dumbbells → follow client to next exercise → cue them → transition. Equipment away, client communicated with, transition made — all in one movement.</p>
+<h3>Context — May Ramp-Up</h3>
+<p>Civan will move to approximately 25 sessions per week from May. The development focus right now is entirely operational. The foundations being laid now — systems, communication, equipment standards — are what will allow him to perform consistently at volume.</p>
+<h3>Commitments</h3>
+<ul><li>TeamBuildr before every weight session — open it, review programs, build familiarity</li><li>Equipment away as you go — return immediately; end-of-session scan before leaving the floor</li><li>Try managing two clients — attempt two-client floor flow in next weight session</li><li>Keep the communication going — it's working; make it automatic</li></ul></div>
+                <div id="cs2-c" class="summ-pane"><h3>How It Went</h3>
+<p>Good session — short catch-up but everything that needed to land, landed quickly. You came in with great energy and the right attitude.</p>
+<p>You've only had one weight session since we last met, so limited opportunity to practise the Session 1 commitments. That's fine. The key thing: what you did try — the communication piece — you tried it and felt the difference immediately.</p>
+<h3>Session 1 Review</h3>
+<p>The communication commitment — telling your client what you're doing when moving, recording, or setting up — you said it made the whole session run more smoothly. Your client never felt left on their own. Keep doing it. The other commitments (TeamBuildr, floor flow, two-client management) carry forward — they'll be properly tested as session load increases in May.</p>
+<h3>Floor Observation</h3>
+<p>One thing I noticed: rig attachments were still on after your session, and some equipment was left behind when you stepped off. We're building a new standard for all coaches at Lockeroom. The standard: when you step off the floor, it should look the same as or better than when you arrived. Quick scan before you leave — rig cleared, equipment back where it belongs.</p>
+<h3>Equipment Away as You Go</h3>
+<p>When you finish with a piece of equipment, return it immediately — not at the end of the session, as you go. The practical version: client finishes last set of DB bench press and puts the dumbbells down. You pick them up, rack them, and follow the client to the next exercise. Give them a cue, let them know you're moving to your other client. Equipment's away, client's cued, you're moving. Three things in one transition.</p>
+<h3>Your Focus This Week</h3>
+<ul><li>TeamBuildr before every session — see the movement name and know exactly what it is</li><li>Equipment away as you go — rack it, strip it, return it before you move on; quick scan before leaving the floor</li><li>Try managing two clients — start with clients you know are self-sufficient</li><li>Keep the communication going — you already know this one works</li></ul></div>
+                <div id="cs2-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
@@ -1700,7 +1992,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           </div>
           <div class="card">
             <div class="ph">Context — May Ramp-Up</div>
-            <p style="font-size:14px;color:var(--t2);line-height:1.7">Civian moves to ~25 sessions/week from May. The development focus right now is entirely operational — systems, habits, floor standards. Once volume increases, there will be much more to observe and build on. Session 3 will focus on how two-client floor management plays out in practice.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Civan moves to ~25 sessions/week from May. The development focus right now is entirely operational — systems, habits, floor standards. Once volume increases, there will be much more to observe and build on. Session 3 will focus on how two-client floor management plays out in practice.</p>
           </div>
         </div>
       </div>
@@ -1727,10 +2019,53 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">01</span><span class="tt-text">S2 commitment review — TeamBuildr, equipment, communication all strong</span></div>
               <div class="topic-tile"><span class="tt-num">02</span><span class="tt-text">Flow fix reinforced — deeper prep, mental run-through before walking on floor</span></div>
               <div class="topic-tile"><span class="tt-num">03</span><span class="tt-text">If you forget mid-session — communicate it, don't disappear silently to the iPad</span></div>
-              <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Floor positioning practical — Andrew modelled, Civian walked through narrating out loud</span></div>
+              <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Floor positioning practical — Andrew modelled, Civan walked through narrating out loud</span></div>
               <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">The rule: never turn your back fully on either client — sightline principle</span></div>
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Coaching from a distance — cues, corrections, acknowledgement across the room</span></div>
               <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Scenario used: Client A trap bar deadlift (heavy, spotting) + Client B dumbbell bench</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'cs3-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs3-c')">Civan</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs3-a')">Andrew's Notes</button>
+                </div>
+                <div id="cs3-j" class="summ-pane active"><h3>Overview</h3>
+<p>Strong practical session focused on positioning and coaching from a distance — how to manage two clients in different parts of the gym while keeping both in view. Civan's foundations from Sessions 1 and 2 are holding. Equipment management, session flow, and two-client management are becoming consistent. Communication has become a genuine strength.</p>
+<h3>What Was Covered</h3>
+<p><strong>Session 2 commitment review</strong> — tracking well across all commitments. TeamBuildr prep is happening consistently. Equipment management confirmed by direct floor observation. Communication is a clear highlight.</p>
+<p><strong>The iPad check — practical fix reinforced</strong> — for forgetting mid-session: deeper pre-session prep as prevention, and a clear communication strategy when it does happen (set the client up on the exercise he remembers, communicate that he's confirming the next one).</p>
+<p><strong>Positioning on the gym floor</strong> — core principle introduced: never fully turn your back on either client. Position yourself so both are always somewhere in your sightline — direct view, peripheral, or a quick head turn. Worked through using a trap bar deadlift and DB bench press scenario.</p>
+<p><strong>Coaching from a distance</strong> — does not need to be standing directly beside a client to give them value. Verbal cues, corrections, technique observations, and acknowledgements of effort can all be delivered from across the room.</p>
+<h3>Key Development Areas</h3>
+<div class="srow"><span class="srow-k">Equipment management</span><span class="srow-v" style="color:var(--green)">✅ Consistent</span></div>
+<div class="srow"><span class="srow-k">Session flow</span><span class="srow-v" style="color:var(--green)">✅ Building well</span></div>
+<div class="srow"><span class="srow-k">Managing two clients</span><span class="srow-v" style="color:var(--green)">✅ In practice</span></div>
+<div class="srow"><span class="srow-k">Communication</span><span class="srow-v" style="color:var(--green)">✅ Priority strength</span></div>
+<div class="srow"><span class="srow-k">Positioning on the floor</span><span class="srow-v">🆕 Introduced</span></div>
+<div class="srow"><span class="srow-k">Coaching from a distance</span><span class="srow-v">🆕 Introduced</span></div>
+<h3>Commitments</h3>
+<ul><li>TeamBuildr — pre-session mental run-through, not just opening the app</li><li>Equipment away as he goes — keep it automatic</li><li>Communication — maintaining the standard</li><li>Positioning — practising "never turn your back" in every session before May</li><li>Coaching from a distance — calling out cues without walking over; keeping both clients in sights</li></ul></div>
+                <div id="cs3-c" class="summ-pane"><h3>What We Reinforced</h3>
+<p>Before anything new, we went through what has been working — because a lot has been working. Your A to B series transitions are smooth. Equipment is going back as you go. You're managing two clients and keeping the session moving. And your communication has become a real strength.</p>
+<p>The water sip moment from your reflection — asking a client to take a sip while you log their data so there's never a dead moment — that's exactly the level of thinking we're after. Keep that standard.</p>
+<h3>The Flow Problem — What to Do When You Forget</h3>
+<p><strong>Before the session:</strong> Don't just open TeamBuildr and look at exercise names. Run through the whole session in your head — who does what, when, in what order. Close the iPad in your head before you open the door.</p>
+<p><strong>If you still forget:</strong> Try to remember at least one exercise from the B series. Set the client up on that one first, then tell them clearly — <em>"I'm just going to check your next exercise."</em> The communication covers it. The problem is never the check — it's doing it silently.</p>
+<h3>Today's Main Focus — Positioning on the Floor</h3>
+<p><strong>The principle: never fully turn your back on either client.</strong> Position yourself so you can always see both clients — either directly, through your peripheral vision, or with a quick turn of your head.</p>
+<p>This matters because the moment your back is turned, a client stops feeling coached. That subtle awareness — that they're being seen — changes how clients feel in a session.</p>
+<h3>Coaching From a Distance</h3>
+<p>You don't have to walk all the way over to a client to give them value. From across the room, you can watch their movement, catch a technique issue, call out a quick cue or correction, acknowledge their effort, and let them know you're still watching. You're always coaching — from wherever you're standing.</p>
+<h3>Your Focus for This Week</h3>
+<ul><li>Practise coaching from a distance — call out a cue, make a correction, give them something from where you are</li><li>Be intentional about positioning so both clients are always somewhere in your sights</li><li>Carry forward: TeamBuildr deeper prep, equipment away as you go, communication throughout</li></ul></div>
+                <div id="cs3-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1747,7 +2082,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           </div>
           <div class="card">
             <div class="ph">Andrew's Notes</div>
-            <p style="font-size:14px;color:var(--t2);line-height:1.7">Strong session. Practical format worked well — no live clients, floor walkthrough with narration. Civian is internalising the concepts, not just going through the motions. His communication is becoming a genuine problem-solving tool. Biggest takeaway: the sightline principle — positioning himself so he never fully turns his back on either client.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7">Strong session. Practical format worked well — no live clients, floor walkthrough with narration. Civan is internalising the concepts, not just going through the motions. His communication is becoming a genuine problem-solving tool. Biggest takeaway: the sightline principle — positioning himself so he never fully turns his back on either client.</p>
           </div>
           <div class="card">
             <div class="ph">S4 Focus</div>
@@ -1758,7 +2093,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     </div>
     <div id="c-s4" class="stc">
       <div class="sess-hdr">
-        <div><div class="sh-title">Session 4 — Core Exercise Coaching</div><div class="sh-date">9 May 2026 · Joint session — Civian &amp; Vinny · Andrew · Final session of initial cycle</div></div>
+        <div><div class="sh-title">Session 4 — Core Exercise Coaching</div><div class="sh-date">9 May 2026 · Joint session — Civan &amp; Vinny · Andrew · Final session of initial cycle</div></div>
         <span class="badge b-done">Complete</span>
       </div>
       <div class="sess-stats">
@@ -1781,8 +2116,54 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
               <div class="topic-tile"><span class="tt-num">04</span><span class="tt-text">Core exercises — dead bugs, sit-ups, crunches, planks, hollow holds: progressions, regressions, common faults</span></div>
               <div class="topic-tile"><span class="tt-num">05</span><span class="tt-text">Stability before mobilisation — body at rest → activate → confirm position → then progress lever/load</span></div>
               <div class="topic-tile"><span class="tt-num">06</span><span class="tt-text">Tactile cueing — pick one body part, give it a direction; hand on ribs or lower back for activation feedback</span></div>
-              <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Live coaching rotation — Civian coaches Vinny, Vinny coaches Civian; Andrew observes and corrects</span></div>
+              <div class="topic-tile"><span class="tt-num">07</span><span class="tt-text">Live coaching rotation — Civan coaches Vinny, Vinny coaches Civan; Andrew observes and corrects</span></div>
               <div class="topic-tile"><span class="tt-num">08</span><span class="tt-text">Coach to the person in front of you — beginners need a progressive setup; advanced clients can handle more</span></div>
+            </div>
+            <div class="summ-acc">
+              <div class="summ-acc-bar" onclick="toggleSumm(this)">
+                <span class="sab-title">Session Summaries</span>
+                <span class="sab-arrow">▼</span>
+              </div>
+              <div class="summ-inner">
+                <div class="summ-tab-row">
+                  <button class="summ-tab-btn active" onclick="switchSummTab(this,'cs4-j')">Jarryd</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs4-c')">Civan</button>
+                  <button class="summ-tab-btn" onclick="switchSummTab(this,'cs4-a')">Andrew's Notes</button>
+                </div>
+                <div id="cs4-j" class="summ-pane active"><h3>Overview</h3>
+<p>Final session of the pilot, delivered jointly with Vinny. Joint format was intentional — peer coaching during the practical generated high-quality learning that one-to-one would not have produced. Two pillars: programming delivery and a core exercise practical triggered by a real client incident. Both coaches engaged exceptionally well and demonstrated clear conceptual understanding by the end.</p>
+<p>Civan has progressed faster and more consistently than anticipated across this pilot. He is ready to operate independently at full volume.</p>
+<h3>What Was Covered</h3>
+<p><strong>Programming and TeamBuildr</strong> — rehab exercises are physio-prescribed and non-negotiable. Session pacing must follow Perfect Session timing. C series flexibility: two sets is the floor, never cut entirely.</p>
+<p><strong>Appropriate intensity and client levels</strong> — check client history in TeamBuildr before the session, use the warmup as a live movement assessment, set load based on what the client has successfully executed before. One direct question resolves uncertainty: <em>"How are you feeling today — do you want to be pushed, or are we keeping it steady?"</em></p>
+<p><strong>Core exercise practical</strong> — dead bugs, sit-ups, crunches, planks, hollow holds. Progressions, regressions, and common errors for each. Central concept: <strong>stability before mobilisation</strong> — activate the core before adding any movement or load.</p>
+<p><strong>Live peer demonstrations</strong> — Vinny coached Civan, Civan coached Vinny, Andrew observed and corrected. Both coaches' natural instinct was to coach at the level of an experienced client. Key correction: beginners need the full setup progression — activation before movement, not just instruction toward an end position.</p>
+<h3>Pilot Summary — Civan's Development</h3>
+<div class="srow"><span class="srow-k">Pre-session prep (TeamBuildr)</span><span class="srow-v" style="color:var(--green)">✅ Consistent</span></div>
+<div class="srow"><span class="srow-k">Equipment management</span><span class="srow-v" style="color:var(--green)">✅ Locked in</span></div>
+<div class="srow"><span class="srow-k">Managing two clients</span><span class="srow-v" style="color:var(--green)">✅ In practice</span></div>
+<div class="srow"><span class="srow-k">Communication</span><span class="srow-v" style="color:var(--green)">✅ Priority strength</span></div>
+<div class="srow"><span class="srow-k">Positioning on the floor</span><span class="srow-v" style="color:var(--green)">✅ Introduced + applied</span></div>
+<div class="srow"><span class="srow-k">Session pacing + intensity</span><span class="srow-v" style="color:var(--green)">✅ Introduced</span></div>
+<div class="srow"><span class="srow-k">Core exercise coaching</span><span class="srow-v" style="color:var(--green)">✅ Introduced</span></div>
+<h3>Overall Assessment</h3>
+<p>Standout outcome of this pilot. Progressed faster than the programme anticipated, implemented changes with consistency and without needing repeated reinforcement, and showed genuine curiosity throughout. Enters full-volume coaching in May with a strong foundation. No further formal mentoring sessions required — ongoing floor observation recommended as volume increases.</p></div>
+                <div id="cs4-c" class="summ-pane"><h3>Where You Started vs. Where You Are Now</h3>
+<p>Four sessions in, and it's worth pausing. You came into this pilot already further along than most. By Session 2 you had equipment management dialled in. By Session 3, communication had become a genuine strength — something you were using to solve problems in real time, not just a habit you were building. Positioning clicked quickly. You're ready for the volume that's coming in May.</p>
+<h3>Programming — At the Tablets</h3>
+<p><strong>Rehab exercises at the top of the program.</strong> If a client has them, they are not optional. Their physio has prescribed them. If a client tries to skip them or rush past, you hold the line.</p>
+<p><strong>Pacing.</strong> C series is where you have built-in flexibility: most clients on two sets. If running ahead — offer a third. If over time — finish at two. The C series never gets cut completely.</p>
+<p><strong>Intensity — reading it, not guessing it.</strong> Check their history before you walk on the floor. Use the warmup as your live assessment — if moving well and confidently, progress toward their numbers. If you see something that needs attention, scale back and tell them why. Never assume weakness or strength. Let the data and the warmup tell you.</p>
+<h3>The Practical — Core Exercises</h3>
+<p><strong>The big idea: stability before mobilisation.</strong></p>
+<ol><li>Get the client positioned and settled</li><li>Activate the core before adding any movement or load — ribs tucked, brace engaged</li><li>Then progress — elevate the legs, extend the lever, add difficulty</li></ol>
+<p>The hollow hold is the clearest example. If you ask someone to hold the hollow position without first getting the activation, their lower back takes the load instead of their core. The fix is simple: body at rest first, rib tuck, core braced, then legs go up.</p>
+<p><strong>Tactile cues:</strong> when verbal cues aren't landing — pick a specific body part and give it a direction. Not <em>"brace your core"</em> but <em>"pull your lower ribs toward the floor."</em> Keep it comfortable. Always tell the client before you make contact.</p>
+<p><strong>What we noticed in the practical:</strong> your instinct was to coach like you were working with an experienced client. For a beginner, that doesn't work — they genuinely cannot feel what you're asking for. The shift: give them the setup process, not just the end position. Let them feel the difference between doing it with and without the core switched on.</p>
+<h3>What You're Taking Into May</h3>
+<ul><li>Rehab exercises — non-negotiable, check at the top of every program</li><li>Follow Perfect Session timing; use C series rule for end-of-session flexibility</li><li>Read intensity from history and warmup — never assume</li><li>Stability before mobilisation — activation first, every time</li><li>Tactile cues when verbal isn't enough — specific, comfortable, explained first</li><li>Keep the positioning habit going — never turn your back, coach from wherever you are</li></ul></div>
+                <div id="cs4-a" class="summ-pane"><p class="summ-empty">No notes saved yet for this session.</p></div>
+              </div>
             </div>
           </div>
           <div class="card">
@@ -1949,7 +2330,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     </div>
   </div>
 
-</div><!-- /civian -->
+</div><!-- /civan -->
 
 
 </main>
@@ -2019,6 +2400,15 @@ function animateTracks(){
     setTimeout(function(){el.style.width=pct+'%'},60);
   });
 }
+
+  function toggleSumm(el){el.closest('.summ-acc').classList.toggle('open')}
+  function switchSummTab(btn,paneId){
+    var acc=btn.closest('.summ-acc');
+    acc.querySelectorAll('.summ-tab-btn').forEach(function(b){b.classList.remove('active')});
+    acc.querySelectorAll('.summ-pane').forEach(function(p){p.classList.remove('active')});
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
 </script>
 </body>
 </html>
